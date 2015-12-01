@@ -1,7 +1,6 @@
 package com.oreilly.demo.android.pa.uidemo.view;
 
 import android.content.Context;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,8 +8,8 @@ import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.oreilly.demo.android.pa.uidemo.model.Dot;
-import com.oreilly.demo.android.pa.uidemo.model.Dots;
+import com.oreilly.demo.android.pa.uidemo.model.Monster;
+import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 
 
 /**
@@ -18,14 +17,14 @@ import com.oreilly.demo.android.pa.uidemo.model.Dots;
  *
  * @author <a href="mailto:android@callmeike.net">Blake Meike</a>
  */
-public class DotView extends View {
+public class MonsterView extends View {
 
-    private volatile Dots dots;
+    private volatile Monsters monsters;
 
     /**
      * @param context the rest of the application
      */
-    public DotView(Context context) {
+    public MonsterView(Context context) {
         super(context);
         setFocusableInTouchMode(true);
     }
@@ -34,7 +33,7 @@ public class DotView extends View {
      * @param context
      * @param attrs
      */
-    public DotView(Context context, AttributeSet attrs) {
+    public MonsterView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setFocusableInTouchMode(true);
     }
@@ -44,15 +43,15 @@ public class DotView extends View {
      * @param attrs
      * @param defStyle
      */
-    public DotView(Context context, AttributeSet attrs, int defStyle) {
+    public MonsterView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setFocusableInTouchMode(true);
     }
 
     /**
-     * @param dots
+     * @param monsters
      */
-    public void setDots(Dots dots) { this.dots = dots; }
+    public void setMonsters(Monsters monsters) { this.monsters = monsters; }
 
     /**
      * @see android.view.View#onDraw(android.graphics.Canvas)
@@ -63,15 +62,15 @@ public class DotView extends View {
         paint.setColor(hasFocus() ? Color.BLUE : Color.GRAY);
         canvas.drawRect(0, 0, getWidth() - 1, getHeight() -1, paint);
 
-        if (null == dots) { return; }
+        if (null == monsters) { return; }
 
         paint.setStyle(Style.FILL);
-        for (Dot dot : dots.getDots()) {
-            paint.setColor(dot.getColor());
+        for (Monster monster : monsters.getMonsters()) {
+            paint.setColor(monster.getColor());
             canvas.drawCircle(
-                dot.getX(),
-                dot.getY(),
-                dot.getDiameter(),
+                monster.getX(),
+                monster.getY(),
+                monster.getDiameter(),
                 paint);
         }
     }

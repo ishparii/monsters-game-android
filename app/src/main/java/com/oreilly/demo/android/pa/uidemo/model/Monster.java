@@ -2,7 +2,7 @@ package com.oreilly.demo.android.pa.uidemo.model;
 
 
 /** A dot: the coordinates, color and size. */
-public final class Dot {
+public final class Monster {
     private final float x, y;
     private final int color;
     private final int diameter;
@@ -13,7 +13,7 @@ public final class Dot {
      * @param color the color.
      * @param diameter dot diameter.
      */
-    public Dot(float x, float y, int color, int diameter) {
+    public Monster(float x, float y, int color, int diameter) {
         this.x = x;
         this.y = y;
         this.color = color;

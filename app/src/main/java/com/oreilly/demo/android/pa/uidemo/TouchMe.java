@@ -1,28 +1,28 @@
 package com.oreilly.demo.android.pa.uidemo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.oreilly.demo.android.pa.uidemo.model.Dot;
-import com.oreilly.demo.android.pa.uidemo.model.Dots;
-import com.oreilly.demo.android.pa.uidemo.view.DotView;
+import com.oreilly.demo.android.pa.uidemo.model.Monster;
+import com.oreilly.demo.android.pa.uidemo.model.Monsters;
+import com.oreilly.demo.android.pa.uidemo.view.MonsterView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -36,10 +36,10 @@ public class TouchMe extends Activity {
     private static final class TrackingTouchListener
         implements View.OnTouchListener
     {
-        private final Dots mDots;
+        private final Monsters mMonsters;
         private List<Integer> tracks = new ArrayList<Integer>();
 
-        TrackingTouchListener(Dots dots) { mDots = dots; }
+        TrackingTouchListener(Monsters monsters) { mMonsters = monsters; }
 
         @Override public boolean onTouch(View v, MotionEvent evt) {
             int n;
@@ -64,12 +64,12 @@ public class TouchMe extends Activity {
                     for (Integer i: tracks) {
                         idx = evt.findPointerIndex(i.intValue());
                         for (int j = 0; j < n; j++) {
-                            addDot(
-                                mDots,
-                                evt.getHistoricalX(idx, j),
-                                evt.getHistoricalY(idx, j),
-                                evt.getHistoricalPressure(idx, j),
-                                evt.getHistoricalSize(idx, j));
+                            addMonster(
+                                    mMonsters,
+                                    evt.getHistoricalX(idx, j),
+                                    evt.getHistoricalY(idx, j),
+                                    evt.getHistoricalPressure(idx, j),
+                                    evt.getHistoricalSize(idx, j));
                         }
                     }
                     break;
@@ -81,41 +81,41 @@ public class TouchMe extends Activity {
 
             for (Integer i: tracks) {
                 idx = evt.findPointerIndex(i.intValue());
-                addDot(
-                    mDots,
-                    evt.getX(idx),
-                    evt.getY(idx),
-                    evt.getPressure(idx),
-                    evt.getSize(idx));
+                addMonster(
+                        mMonsters,
+                        evt.getX(idx),
+                        evt.getY(idx),
+                        evt.getPressure(idx),
+                        evt.getSize(idx));
             }
 
             return true;
         }
 
-        private void addDot(Dots dots, float x, float y, float p, float s) {
-            dots.addDot(
-                x,
-                y,
-                Color.CYAN,
-                (int) ((p + 0.5) * (s + 0.5) * DOT_DIAMETER));
+        private void addMonster(Monsters monsters, float x, float y, float p, float s) {
+            monsters.addMonster(
+                    x,
+                    y,
+                    Color.CYAN,
+                    (int) ((p + 0.5) * (s + 0.5) * DOT_DIAMETER));
         }
     }
 
     /** Generate new dots, one per second. */
-    private final class DotGenerator implements Runnable {
-        final Dots dots;
-        final DotView view;
+    private final class MonsterGenerator implements Runnable {
+        final Monsters monsters;
+        final MonsterView view;
         final int color;
 
         private final Handler hdlr = new Handler();
-        private final Runnable makeDots = new Runnable() {
-            @Override public void run() { makeDot(dots, view, color); }
+        private final Runnable makeMonsters = new Runnable() {
+            @Override public void run() { makeMonster(monsters, view, color); }
         };
 
         private volatile boolean done;
 
-        DotGenerator(Dots dots, DotView view, int color) {
-            this.dots = dots;
+        MonsterGenerator(Monsters monsters, MonsterView view, int color) {
+            this.monsters = monsters;
             this.view = view;
             this.color = color;
         }
@@ -125,7 +125,7 @@ public class TouchMe extends Activity {
         @Override
         public void run() {
             while (!done) {
-                hdlr.post(makeDots);
+                hdlr.post(makeMonsters);
                 try { Thread.sleep(2000); }
                 catch (InterruptedException e) { }
             }
@@ -135,13 +135,13 @@ public class TouchMe extends Activity {
     private final Random rand = new Random();
 
     /** The application model */
-    final Dots dotModel = new Dots();
+    final Monsters monsterModel = new Monsters();
 
     /** The application view */
-    DotView dotView;
+    MonsterView monsterView;
 
     /** The dot generator */
-    DotGenerator dotGenerator;
+    MonsterGenerator monsterGenerator;
 
     /** Called when the activity is first created. */
     @Override public void onCreate(Bundle state) {
@@ -151,13 +151,13 @@ public class TouchMe extends Activity {
         setContentView(R.layout.main);
 
         // find the dots view
-        dotView = (DotView) findViewById(R.id.dots);
-        dotView.setDots(dotModel);
+        monsterView = (MonsterView) findViewById(R.id.dots);
+        monsterView.setMonsters(monsterModel);
 
-        dotView.setOnCreateContextMenuListener(this);
-        dotView.setOnTouchListener(new TrackingTouchListener(dotModel));
+        monsterView.setOnCreateContextMenuListener(this);
+        monsterView.setOnTouchListener(new TrackingTouchListener(monsterModel));
 
-        dotView.setOnKeyListener(new OnKeyListener() {
+        monsterView.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (KeyEvent.ACTION_DOWN != event.getAction()) {
@@ -176,22 +176,22 @@ public class TouchMe extends Activity {
                         return false;
                 }
 
-                makeDot(dotModel, dotView, color);
+                makeMonster(monsterModel, monsterView, color);
 
                 return true;
             } });
 
 
-        dotView.setOnFocusChangeListener(new OnFocusChangeListener() {
+        monsterView.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus && (null != dotGenerator)) {
-                    dotGenerator.done();
-                    dotGenerator = null;
+                if (!hasFocus && (null != monsterGenerator)) {
+                    monsterGenerator.done();
+                    monsterGenerator = null;
                 }
-                else if (hasFocus && (null == dotGenerator)) {
-                    dotGenerator
-                    = new DotGenerator(dotModel, dotView, Color.BLACK);
-                    new Thread(dotGenerator).start();
+                else if (hasFocus && (null == monsterGenerator)) {
+                    monsterGenerator
+                    = new MonsterGenerator(monsterModel, monsterView, Color.BLACK);
+                    new Thread(monsterGenerator).start();
                 }
             } });
 
@@ -199,24 +199,24 @@ public class TouchMe extends Activity {
         ((Button) findViewById(R.id.button1)).setOnClickListener(
             new Button.OnClickListener() {
                 @Override public void onClick(View v) {
-                    makeDot(dotModel, dotView, Color.RED);
+                    makeMonster(monsterModel, monsterView, Color.RED);
                 } });
         ((Button) findViewById(R.id.button2)).setOnClickListener(
             new Button.OnClickListener() {
                 @Override public void onClick(View v) {
-                    makeDot(dotModel, dotView, Color.GREEN);
+                    makeMonster(monsterModel, monsterView, Color.GREEN);
                 } });
 
         final EditText tb1 = (EditText) findViewById(R.id.text1);
         final EditText tb2 = (EditText) findViewById(R.id.text2);
-        dotModel.setDotsChangeListener(new Dots.DotsChangeListener() {
-            @Override public void onDotsChange(Dots dots) {
-                Dot d = dots.getLastDot();
+        monsterModel.setMonstersChangeListener(new Monsters.MonstersChangeListener() {
+            @Override public void onMonstersChange(Monsters monsters) {
+                Monster m = monsters.getLastMonster();
                 // This code makes the UI unacceptably unresponsive.
                 // ... investigating - in March, 2014, this was not a problem
-                tb1.setText((null == d) ? "" : String.valueOf(d.getX())); // uncommented
-                tb2.setText((null == d) ? "" : String.valueOf(d.getY())); // uncommented
-                dotView.invalidate();
+                tb1.setText((null == m) ? "" : String.valueOf(m.getX())); // uncommented
+                tb2.setText((null == m) ? "" : String.valueOf(m.getY())); // uncommented
+                monsterView.invalidate();
             } });
     }
 
@@ -230,7 +230,7 @@ public class TouchMe extends Activity {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_clear:
-                dotModel.clearDots();
+                monsterModel.clearMonsters();
                 return true;
 
             default:
@@ -252,7 +252,7 @@ public class TouchMe extends Activity {
     @Override public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 1:
-                dotModel.clearDots();
+                monsterModel.clearMonsters();
                 return true;
             default: ;
         }
@@ -261,13 +261,13 @@ public class TouchMe extends Activity {
     }
 
     /**
-     * @param dots the dots we're drawing
+     * @param monsters the dots we're drawing
      * @param view the view in which we're drawing dots
      * @param color the color of the dot
      */
-    void makeDot(Dots dots, DotView view, int color) {
+    void makeMonster(Monsters monsters, MonsterView view, int color) {
         int pad = (DOT_DIAMETER + 2) * 2;
-        dots.addDot(
+        monsters.addMonster(
             DOT_DIAMETER + (rand.nextFloat() * (view.getWidth() - pad)),
             DOT_DIAMETER + (rand.nextFloat() * (view.getHeight() - pad)),
             color,
