@@ -16,7 +16,7 @@
         android:layout_weight="1"
         android:background="@color/white"
         />
-    
+
   <LinearLayout
       android:orientation="horizontal"
       android:background="@color/grey"

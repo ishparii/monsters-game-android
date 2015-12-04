@@ -9,7 +9,7 @@ import java.util.List;
 public class Monsters {
     /** MonsterChangeListener. */
     public interface MonstersChangeListener {
-        /** @param monsters the dots that changed. */
+        /** @param monsters the monsters that changed. */
         void onMonstersChange(Monsters monsters);
     }
 
@@ -29,17 +29,22 @@ public class Monsters {
     }
 
     /** @return immutable list of monsters. */
-    public List<Monster> getMonsters() { return safeMonsters; }
+    public List<Monster> getMonsters() {
+        return safeMonsters;
+    }
 
     /**
-     * @param x dot horizontal coordinate.
-     * @param y dot vertical coordinate.
-     * @param color dot color.
-     * @param diameter dot size.
+     * @param x horizontal coordinate at top left corner
+     * @param y vertical coordinate at top left corner
+     * @param isVulnerable status of monster.
       */
-    public void addMonster(float x, float y, int color, int diameter) {
-        monsters.add(new Monster(x, y, color, diameter));
+    public void addMonster(float x, float y, boolean isVulnerable) {
+        monsters.add(new Monster(x, y, isVulnerable));
         notifyListener();
+    }
+
+    public void removeMonster(float x, float y){
+
     }
 
     /** Remove all dots. */

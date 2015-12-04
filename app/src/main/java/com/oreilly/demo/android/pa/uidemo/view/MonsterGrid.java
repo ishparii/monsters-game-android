@@ -1,12 +1,19 @@
 package com.oreilly.demo.android.pa.uidemo.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.oreilly.demo.android.pa.uidemo.R;
+import com.oreilly.demo.android.pa.uidemo.model.Monster;
+import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 
 /**
  * Created by Team 05 on 12/1/15.
@@ -24,6 +31,7 @@ public class MonsterGrid extends View {
     private int bottomMargin;
     private int displayWidth;
     private int displayHeight;
+    private Monsters monsters;
 
     /**
      * @param context the rest of the application
@@ -52,6 +60,10 @@ public class MonsterGrid extends View {
         setFocusableInTouchMode(true);
     }
 
+    public void setMonsters(Monsters monsters){
+        this.monsters = monsters;
+    }
+
     /**
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
@@ -62,28 +74,28 @@ public class MonsterGrid extends View {
         paint.setColor(Color.BLACK);
 
         System.out.println("squareWidth"+squareWidth);
-        canvas.drawRect(leftMargin, topMargin, displayWidth - rightMargin, displayHeight - bottomMargin, paint);
+        canvas.drawRect(leftMargin, topMargin, displayWidth - rightMargin, displayHeight
+                - bottomMargin, paint);
 
         for(int i = 0 ; i < row - 1 ; i ++){
-            canvas.drawLine(leftMargin, topMargin + (i+1) * squareWidth, displayWidth - rightMargin, topMargin + (i+1) * squareWidth , paint);
+            canvas.drawLine(leftMargin, topMargin + (i+1) * squareWidth, displayWidth - rightMargin,
+                    topMargin + (i+1) * squareWidth , paint);
         }
 
         for(int i = 0 ; i < column - 1 ; i ++){
-            canvas.drawLine(leftMargin + (i+1) * squareWidth, topMargin , leftMargin + (i+1) * squareWidth, displayHeight - bottomMargin, paint);
+            canvas.drawLine(leftMargin + (i+1) * squareWidth, topMargin , leftMargin + (i+1)
+                    * squareWidth, displayHeight - bottomMargin, paint);
         }
 
-
-//        if (null == dots) { return; }
-//
-//        paint.setStyle(Paint.Style.FILL);
-//        for (Dot dot : dots.getDots()) {
-//            paint.setColor(dot.getColor());
-//            canvas.drawCircle(
-//                    dot.getX(),
-//                    dot.getY(),
-//                    dot.getDiameter(),
-//                    paint);
-//        }
+        //draw monsters
+        paint.setColor(monsters.getLastMonster().getStatus() ? Color.YELLOW : Color.GREEN);
+        if (null == monsters) { return; }
+        else{
+            Bitmap bitmap_green = BitmapFactory.decodeResource(getResources(), R.drawable.green_monster);
+            for (Monster monster : monsters.getMonsters()) {
+                canvas.drawBitmap(bitmap_green, monster.getX(), monster.getY(), paint);
+            }
+        }
     }
 
     private void initializeMeasures(){

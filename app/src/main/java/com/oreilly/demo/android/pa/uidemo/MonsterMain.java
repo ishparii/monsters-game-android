@@ -2,6 +2,7 @@ package com.oreilly.demo.android.pa.uidemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
 import java.util.ArrayList;
@@ -16,40 +18,39 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by Team 05 on 12/1/15.
+ * Created by Team 03 on 12/1/15.
  */
 public class MonsterMain extends Activity {
 
-    /** Dot diameter */
-//    public static final int DOT_DIAMETER = 6;
+    /** finger target size*/
+    static final int FINGER_TARGET_SIZE_DP = 36;
 
     /** Listen for taps. */
     private static final class TrackingTouchListener implements View.OnTouchListener {
 
-        //private final Dots mDots;
+        private final Monsters mMonsters;
         private List<Integer> tracks = new ArrayList<Integer>();
 
-        //TrackingTouchListener(Dots dots) { mDots = dots; }
+        TrackingTouchListener(Monsters mMonsters) {
+            this.mMonsters = mMonsters;
+        }
 
         @Override public boolean onTouch(View v, MotionEvent evt) {
             int n;
             int idx;
             int action = evt.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
-
                 case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_POINTER_DOWN:
                     idx = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
                             >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
                     tracks.add(Integer.valueOf(evt.getPointerId(idx)));
                     break;
-
                 case MotionEvent.ACTION_POINTER_UP:
                     idx = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
                             >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
                     tracks.remove(Integer.valueOf(evt.getPointerId(idx)));
                     break;
-
                 case MotionEvent.ACTION_MOVE:
                     n = evt.getHistorySize();
                     for (Integer i: tracks) {
@@ -64,8 +65,6 @@ public class MonsterMain extends Activity {
 //                        }
                     }
                     break;
-
-
                 default:
                     return false;
             }
@@ -79,54 +78,54 @@ public class MonsterMain extends Activity {
 //                        evt.getPressure(idx),
 //                        evt.getSize(idx));
 //            }
-
             return true;
         }
 
-//        private void addDot(Dots dots, float x, float y, float p, float s) {
-//            dots.addDot(
-//                    x,
-//                    y,
-//                    Color.CYAN,
-//                    (int) ((p + 0.5) * (s + 0.5) * DOT_DIAMETER));
-//        }
+        private void addMonster(float x, float y, boolean isVulnerable) {
+            mMonsters.addMonster(x, y, isVulnerable);
+        }
     }
 
-    /** Generate new dots, one per second. */
-//    private final class DotGenerator implements Runnable {
-//        final Dots dots;
-//        final DotView view;
-//        final int color;
-//
-//        private final Handler hdlr = new Handler();
-//        private final Runnable makeDots = new Runnable() {
-//            @Override public void run() { makeDot(dots, view, color); }
-//        };
-//
-//        private volatile boolean done;
-//
-//        DotGenerator(Dots dots, DotView view, int color) {
-//            this.dots = dots;
-//            this.view = view;
-//            this.color = color;
-//        }
-//
-//        public void done() { done = true; }
-//
-//        @Override
-//        public void run() {
-//            while (!done) {
-//                hdlr.post(makeDots);
-//                try { Thread.sleep(2000); }
-//                catch (InterruptedException e) { }
-//            }
-//        }
-//    }
+    /** Generate new monsters, one per second. */
+    private final class MonsterGenerator implements Runnable {
+        final Monsters monsters;
+        final MonsterGrid view;
+        final int color;
+
+        private final Handler hdlr = new Handler();
+
+        private final Runnable makeDots = new Runnable() {
+           @Override public void run() {
+//               makeDot(dots, view, color);
+           }
+        };
+
+        private volatile boolean done;
+
+        MonsterGenerator(Monsters monsters, MonsterGrid view, int color) {
+            this.monsters = monsters;
+            this.view = view;
+            this.color = color;
+        }
+
+        public void done() {
+            done = true;
+        }
+
+        @Override
+        public void run() {
+            while (!done) {
+                hdlr.post(makeDots);
+                try { Thread.sleep(2000); }
+                catch (InterruptedException e) { }
+            }
+        }
+    }
 
     private final Random rand = new Random();
 
     /** The application model */
-//    final Dots dotModel = new Dots();
+    final Monsters monstersModel = new Monsters();
 
     /** The application view */
     MonsterGrid monsterGrid;
@@ -141,13 +140,13 @@ public class MonsterMain extends Activity {
         // install the view
         setContentView(R.layout.monster_main);
 
-        // find the dots view
+        // find the monster view
         monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
 
-        //dotView.setDots(dotModel);
+        monsterGrid.setMonsters(monstersModel);
 
         monsterGrid.setOnCreateContextMenuListener(this);
-        monsterGrid.setOnTouchListener(new TrackingTouchListener());
+        monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel));
 
         monsterGrid.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -248,7 +247,6 @@ public class MonsterMain extends Activity {
                 return true;
             default: ;
         }
-
         return false;
     }
 
