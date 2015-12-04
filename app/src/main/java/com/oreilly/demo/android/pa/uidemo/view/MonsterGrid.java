@@ -133,6 +133,7 @@ public class MonsterGrid extends View {
                 int y = rand.nextInt(row);
                 if(positions[x][y]==0){
                     exist = false;
+                    positions[x][y]=1;
                     this.monsters.addMonster(x, y, i%2==0);
                     monsters.getLastMonster().draw(canvas,  getContext(), squareWidth, leftMargin, topMargin, paint);
                 }
