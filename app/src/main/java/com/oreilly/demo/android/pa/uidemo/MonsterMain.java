@@ -116,8 +116,11 @@ public class MonsterMain extends Activity {
         public void run() {
             while (!done) {
                 hdlr.post(makeDots);
-                try { Thread.sleep(2000); }
-                catch (InterruptedException e) { }
+                try {
+                    Thread.sleep(2000);
+                }
+                catch (InterruptedException e) {
+                }
             }
         }
     }
@@ -221,7 +224,7 @@ public class MonsterMain extends Activity {
     /** Respond to an options menu selection. */
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_clear:
+            case R.id.menu_restart:
                 //dotModel.clearDots();
                 return true;
 
@@ -231,13 +234,8 @@ public class MonsterMain extends Activity {
     }
 
     /** Install a context menu. */
-    @Override public void onCreateContextMenu(
-            ContextMenu menu,
-            View v,
-            ContextMenu.ContextMenuInfo menuInfo)
-    {
-        menu.add(Menu.NONE, 1, Menu.NONE, "Clear")
-                .setAlphabeticShortcut('x');
+    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(Menu.NONE, 1, Menu.NONE, "Restart").setAlphabeticShortcut('r');
     }
 
     /** Respond to a context menu selection. */

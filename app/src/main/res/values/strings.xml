@@ -4,7 +4,7 @@
     <string name="defaultText">0</string>
     <string name="labelRed">Red</string>
     <string name="labelGreen">Green</string>
-    <string name="menuClear">Clear</string>
+    <string name="menuRestart">Restart</string>
     <string name="clock">00:01:00</string>
     <string name="counter">15</string>
 </resources>

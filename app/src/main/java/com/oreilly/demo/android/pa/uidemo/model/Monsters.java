@@ -43,7 +43,7 @@ public class Monsters {
         notifyListener();
     }
 
-    public void removeMonster(float x, float y){
+    public void removeMonster(int x, int y){
 
     }
 

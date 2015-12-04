@@ -29,12 +29,12 @@ public final class Monster extends Observable {
     }
 
     /** @return the horizontal coordinate. */
-    public float getX() {
+    public int getX() {
         return x;
     }
 
     /** @return the vertical coordinate. */
-    public float getY() {
+    public int getY() {
         return y;
     }
 

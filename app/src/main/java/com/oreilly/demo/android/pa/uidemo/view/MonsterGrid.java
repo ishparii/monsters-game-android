@@ -18,7 +18,7 @@ import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import java.util.Random;
 
 /**
- * Created by Team 05 on 12/1/15.
+ * Created by Group 03 on 12/1/15.
  */
 public class MonsterGrid extends View {
 
