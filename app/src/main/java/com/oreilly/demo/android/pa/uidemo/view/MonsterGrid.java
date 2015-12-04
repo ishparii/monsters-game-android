@@ -15,6 +15,8 @@ import com.oreilly.demo.android.pa.uidemo.R;
 import com.oreilly.demo.android.pa.uidemo.model.Monster;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 
+import java.util.Random;
+
 /**
  * Created by Team 05 on 12/1/15.
  */
@@ -64,6 +66,14 @@ public class MonsterGrid extends View {
         this.monsters = monsters;
     }
 
+    public int getRow(){
+        return row;
+    }
+
+    public int getColumn(){
+        return column;
+    }
+
     /**
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
@@ -73,7 +83,6 @@ public class MonsterGrid extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLACK);
 
-        System.out.println("squareWidth"+squareWidth);
         canvas.drawRect(leftMargin, topMargin, displayWidth - rightMargin, displayHeight
                 - bottomMargin, paint);
 
@@ -88,12 +97,16 @@ public class MonsterGrid extends View {
         }
 
         //draw monsters
+
+        initializeMonsters();
+
         paint.setColor(monsters.getLastMonster().getStatus() ? Color.YELLOW : Color.GREEN);
+
         if (null == monsters) { return; }
         else{
             Bitmap bitmap_green = BitmapFactory.decodeResource(getResources(), R.drawable.green_monster);
             for (Monster monster : monsters.getMonsters()) {
-                canvas.drawBitmap(bitmap_green, monster.getX(), monster.getY(), paint);
+                canvas.drawBitmap(bitmap_green, monster.getX()*squareWidth + leftMargin, monster.getY()*squareWidth + topMargin, paint);
             }
         }
     }
@@ -113,5 +126,23 @@ public class MonsterGrid extends View {
         rightMargin = (displayWidth % squareWidth) - (displayWidth % squareWidth) / 2;
         topMargin = (displayHeight % squareWidth) / 2;
         bottomMargin = (displayHeight % squareWidth) - (displayHeight % squareWidth) / 2;
+    }
+
+
+    private void initializeMonsters(){
+
+        Random rand = new Random();
+
+        for(int i = 0 ; i < 10 ; i++){
+            int y = rand.nextInt(row);
+            int x = rand.nextInt(column);
+            this.monsters.addMonster(x, y, false);
+        }
+
+
+
+
+
+
     }
 }

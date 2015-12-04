@@ -1,9 +1,13 @@
 package com.oreilly.demo.android.pa.uidemo.model;
 
 
+import android.graphics.Canvas;
+
+import java.util.Observable;
+
 /** A monster: the coordinates and status */
-public final class Monster {
-    private final float x, y;
+public final class Monster extends Observable {
+    private final int x, y;
     private boolean isVulnerable;
 
     /**
@@ -11,7 +15,7 @@ public final class Monster {
      * @param y vertical coordinate at top left corner.
      * @param isVulnerable status of monster.
      */
-    public Monster(float x, float y, boolean isVulnerable) {
+    public Monster(int x, int y, boolean isVulnerable) {
         this.x = x;
         this.y = y;
         this.isVulnerable = isVulnerable;
@@ -30,5 +34,9 @@ public final class Monster {
     /** @return the status. */
     public boolean getStatus() {
         return isVulnerable;
+    }
+
+    public void draw(Canvas canvas, int squareWidth ){
+
     }
 }

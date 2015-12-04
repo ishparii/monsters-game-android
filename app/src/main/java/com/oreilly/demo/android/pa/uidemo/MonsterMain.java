@@ -142,6 +142,7 @@ public class MonsterMain extends Activity {
 
         // find the monster view
         monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
+        //monsterGrid.initializeMeasures();
 
         monsterGrid.setMonsters(monstersModel);
 
@@ -250,17 +251,19 @@ public class MonsterMain extends Activity {
         return false;
     }
 
-    /**
-     * @param dots the dots we're drawing
-     * @param view the view in which we're drawing dots
-     * @param color the color of the dot
-     */
-//    void makeDot(Dots dots, DotView view, int color) {
+//    /**
+//     * @param dots the dots we're drawing
+//     * @param view the view in which we're drawing dots
+//     * @param color the color of the dot
+//     */
+    void makeMonster(Monsters monsters, MonsterGrid monsterGrid) {
+
+
 //        int pad = (DOT_DIAMETER + 2) * 2;
 //        dots.addDot(
 //                DOT_DIAMETER + (rand.nextFloat() * (view.getWidth() - pad)),
 //                DOT_DIAMETER + (rand.nextFloat() * (view.getHeight() - pad)),
 //                color,
 //                DOT_DIAMETER);
-//    }
+    }
 }
