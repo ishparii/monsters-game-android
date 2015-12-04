@@ -1,7 +1,14 @@
 package com.oreilly.demo.android.pa.uidemo.model;
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
+import com.oreilly.demo.android.pa.uidemo.R;
 
 import java.util.Observable;
 
@@ -36,7 +43,15 @@ public final class Monster extends Observable {
         return isVulnerable;
     }
 
-    public void draw(Canvas canvas, int squareWidth ){
+    public void draw(Canvas canvas, Context context, int squareWidth, int leftMargin, int topMargin, Paint paint ){
+        Bitmap image;
+        if(getStatus()){
+            image = BitmapFactory.decodeResource(context.getResources(), R.drawable.orange_monster);
+        } else{
+            image = BitmapFactory.decodeResource(context.getResources(), R.drawable.green_monster);
+        }
+        Bitmap imageScaled = Bitmap.createScaledBitmap(image,squareWidth,squareWidth, false);
+        canvas.drawBitmap(imageScaled, getX()*squareWidth + leftMargin, getY()*squareWidth + topMargin, paint);
 
     }
 }

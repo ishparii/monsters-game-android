@@ -38,7 +38,7 @@ public class Monsters {
      * @param y vertical coordinate at top left corner
      * @param isVulnerable status of monster.
       */
-    public void addMonster(float x, float y, boolean isVulnerable) {
+    public void addMonster(int x, int y, boolean isVulnerable) {
         monsters.add(new Monster(x, y, isVulnerable));
         notifyListener();
     }

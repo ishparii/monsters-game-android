@@ -34,6 +34,7 @@ public class MonsterGrid extends View {
     private int displayWidth;
     private int displayHeight;
     private Monsters monsters;
+    private int[][] positions;
 
     /**
      * @param context the rest of the application
@@ -96,19 +97,7 @@ public class MonsterGrid extends View {
                     * squareWidth, displayHeight - bottomMargin, paint);
         }
 
-        //draw monsters
-
-        initializeMonsters();
-
-        paint.setColor(monsters.getLastMonster().getStatus() ? Color.YELLOW : Color.GREEN);
-
-        if (null == monsters) { return; }
-        else{
-            Bitmap bitmap_green = BitmapFactory.decodeResource(getResources(), R.drawable.green_monster);
-            for (Monster monster : monsters.getMonsters()) {
-                canvas.drawBitmap(bitmap_green, monster.getX()*squareWidth + leftMargin, monster.getY()*squareWidth + topMargin, paint);
-            }
-        }
+        initializeMonsters(canvas,paint);
     }
 
     private void initializeMeasures(){
@@ -126,23 +115,28 @@ public class MonsterGrid extends View {
         rightMargin = (displayWidth % squareWidth) - (displayWidth % squareWidth) / 2;
         topMargin = (displayHeight % squareWidth) / 2;
         bottomMargin = (displayHeight % squareWidth) - (displayHeight % squareWidth) / 2;
+
+        positions = new int[column][row];
+
+        for(int i = 0 ; i < column ; i++)
+            for(int j = 0 ; j < row ; j++)
+                positions[i][j] = 0;
     }
 
-
-    private void initializeMonsters(){
+    private void initializeMonsters(Canvas canvas, Paint paint){
 
         Random rand = new Random();
-
         for(int i = 0 ; i < 10 ; i++){
-            int y = rand.nextInt(row);
-            int x = rand.nextInt(column);
-            this.monsters.addMonster(x, y, false);
+            boolean exist = true;
+            while (exist){
+                int x = rand.nextInt(column);
+                int y = rand.nextInt(row);
+                if(positions[x][y]==0){
+                    exist = false;
+                    this.monsters.addMonster(x, y, i%2==0);
+                    monsters.getLastMonster().draw(canvas,  getContext(), squareWidth, leftMargin, topMargin, paint);
+                }
+            }
         }
-
-
-
-
-
-
     }
 }

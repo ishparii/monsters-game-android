@@ -81,7 +81,7 @@ public class MonsterMain extends Activity {
             return true;
         }
 
-        private void addMonster(float x, float y, boolean isVulnerable) {
+        private void addMonster(int x, int y, boolean isVulnerable) {
             mMonsters.addMonster(x, y, isVulnerable);
         }
     }
