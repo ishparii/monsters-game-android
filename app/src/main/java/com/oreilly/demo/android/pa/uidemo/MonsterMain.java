@@ -9,7 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
+
+import com.oreilly.demo.android.pa.uidemo.model.Clock;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
@@ -129,6 +132,7 @@ public class MonsterMain extends Activity {
 
     /** The application model */
     final Monsters monstersModel = new Monsters();
+    final Clock clockModel = new Clock();
 
     /** The application view */
     MonsterGrid monsterGrid;
@@ -174,11 +178,13 @@ public class MonsterMain extends Activity {
 //                makeDot(dotModel, dotView, color);
 
                 return true;
-            } });
+            }
+        });
 
 
         monsterGrid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override public void onFocusChange(View v, boolean hasFocus) {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
 //                if (!hasFocus && (null != dotGenerator)) {
 //                    dotGenerator.done();
 //                    dotGenerator = null;
@@ -188,31 +194,20 @@ public class MonsterMain extends Activity {
 //                            = new DotGenerator(dotModel, dotView, Color.BLACK);
 //                    new Thread(dotGenerator).start();
 //                }
-            } });
+            }
+        });
 
-        // wire up the controller
-//        ((Button) findViewById(R.id.button1)).setOnClickListener(
-//                new Button.OnClickListener() {
-//                    @Override public void onClick(View v) {
-//                        makeDot(dotModel, dotView, Color.RED);
-//                    } });
-//        ((Button) findViewById(R.id.button2)).setOnClickListener(
-//                new Button.OnClickListener() {
-//                    @Override public void onClick(View v) {
-//                        makeDot(dotModel, dotView, Color.GREEN);
-//                    } });
+        clockModel.setOnTickListener(new Clock.OnTickListener() {
+            @Override
+            public void onTick() {
+                TextView textView = (TextView) findViewById(R.id.clockView);
+                int displayTime = Integer.parseInt(textView.getText().toString());
+                displayTime--;
+                textView.setText(String.valueOf(displayTime));
+            }
+        });
 
-        //final EditText tb1 = (EditText) findViewById(R.id.text1);
-        //final EditText tb2 = (EditText) findViewById(R.id.text2);
-//        dotModel.setDotsChangeListener(new Dots.DotsChangeListener() {
-//            @Override public void onDotsChange(Dots dots) {
-//                Dot d = dots.getLastDot();
-//                // This code makes the UI unacceptably unresponsive.
-//                // ... investigating - in March, 2014, this was not a problem
-//                tb1.setText((null == d) ? "" : String.valueOf(d.getX())); // uncommented
-//                tb2.setText((null == d) ? "" : String.valueOf(d.getY())); // uncommented
-//                dotView.invalidate();
-//            } });
+//        clockModel.start();
     }
 
     /** Install an options menu. */
@@ -225,9 +220,8 @@ public class MonsterMain extends Activity {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_restart:
-                //dotModel.clearDots();
+                clockModel.start();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -242,7 +236,10 @@ public class MonsterMain extends Activity {
     @Override public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 1:
-                //dotModel.clearDots();
+                new Thread();
+                clockModel.start();
+
+
                 return true;
             default: ;
         }
@@ -254,6 +251,7 @@ public class MonsterMain extends Activity {
 //     * @param view the view in which we're drawing dots
 //     * @param color the color of the dot
 //     */
+
     void makeMonster(Monsters monsters, MonsterGrid monsterGrid) {
 
 
@@ -264,4 +262,5 @@ public class MonsterMain extends Activity {
 //                color,
 //                DOT_DIAMETER);
     }
+
 }

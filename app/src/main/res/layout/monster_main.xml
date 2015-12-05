@@ -13,15 +13,14 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/clock"
-            android:text="@string/clock"
+            android:id="@+id/clockView"
             android:layout_weight="1" android:textSize="40dp" android:layout_marginRight="5dp"
-            android:numeric="integer"/>
+            android:numeric="integer" android:text="@string/clock"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/counter"
+            android:id="@+id/pointsView"
             android:layout_weight="1"
             android:text="@string/points" android:textSize="40dp" android:textAlignment="center"
             android:numeric="integer" android:layout_marginLeft="10dp"/>
