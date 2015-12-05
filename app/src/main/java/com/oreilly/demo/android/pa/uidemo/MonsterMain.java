@@ -1,7 +1,9 @@
 package com.oreilly.demo.android.pa.uidemo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -12,13 +14,16 @@ import android.view.View;
 import android.widget.TextView;
 
 
+
 import com.oreilly.demo.android.pa.uidemo.model.Clock;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Team 03 on 12/1/15.
@@ -137,15 +142,44 @@ public class MonsterMain extends Activity {
     /** The application view */
     MonsterGrid monsterGrid;
 
+    TextView textViewTimer;
+    //adjust the format h:m:s
+    private static final String FORMAT = "%02d:%02d:%02d";
+
+
     /** The dot generator */
 //    DotGenerator dotGenerator;
 
     /** Called when the activity is first created. */
-    @Override public void onCreate(Bundle state) {
-        super.onCreate(state);
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //install the countdown timer
+        setContentView(R.layout.monster_main);
+
+        textViewTimer = (TextView) findViewById(R.id.clockView);
+        new CountDownTimer (60000,1000){
+
+
+            public void onTick(long millisUntilFinished){
+                textViewTimer.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+            }
+
+            public void onFinish(){
+                textViewTimer.setText("Time is Done!");
+            }
+        }.start();
+
 
         // install the view
-        setContentView(R.layout.monster_main);
+        //setContentView(R.layout.monster_main);
+
+
 
         // find the monster view
         monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
@@ -205,10 +239,14 @@ public class MonsterMain extends Activity {
                 displayTime--;
                 textView.setText(String.valueOf(displayTime));
             }
+
         });
 
 //        clockModel.start();
+
+
     }
+
 
     /** Install an options menu. */
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,34 +255,34 @@ public class MonsterMain extends Activity {
     }
 
     /** Respond to an options menu selection. */
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_restart:
-                clockModel.start();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menu_restart:
+//                clockModel.start();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     /** Install a context menu. */
-    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(Menu.NONE, 1, Menu.NONE, "Restart").setAlphabeticShortcut('r');
-    }
+//    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        menu.add(Menu.NONE, 1, Menu.NONE, "Restart").setAlphabeticShortcut('r');
+//    }
 
     /** Respond to a context menu selection. */
-    @Override public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case 1:
-                new Thread();
-                clockModel.start();
-
-
-                return true;
-            default: ;
-        }
-        return false;
-    }
+//    @Override public boolean onContextItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case 1:
+//                new Thread();
+//                clockModel.start();
+//
+//
+//               return true;
+//            default: ;
+//       }
+//        return false;
+//    }
 
 //    /**
 //     * @param dots the dots we're drawing
