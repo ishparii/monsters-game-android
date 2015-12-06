@@ -30,6 +30,14 @@ public final class Monster extends Observable{
     private int y;
     private boolean isVulnerable;
     public boolean moved=false;
+    private AsyncTask<Void,Void,Void> async=new AsyncTask<Void, Void, Void>() {
+        @Override
+        protected Void doInBackground(Void... params) {
+            //params[0]=(Void)new Object();
+            return null;
+        }
+    };
+   // private Observable observable;
     //Random rand=new Random();
 
 
@@ -113,58 +121,58 @@ public final class Monster extends Observable{
 
               switch (direction) {
                   case 0:
-                      if (positions[Math.max(x - 1, 0)][y] == null) {
-                          result[0] = Math.max(x - 1, 0);
+                      if (positions[(x-1+lx)%lx][y] == null) {
+                          result[0] = (x-1+lx)%lx;
                           result[1] = y;
                            moved=true;
                       }
                       break;
                   case 1:
-                      if (positions[Math.max(x - 1, 0)][Math.min(y + 1, ly - 1)] == null) {
-                          result[0] = Math.max(x - 1, lx - 1);
-                          result[1] = Math.min(y + 1, ly - 1);
+                      if (positions[(x-1+lx)%lx][(y+1)%ly] == null) {
+                          result[0] = (x-1+lx)%lx;
+                          result[1] = (y+1)%ly;
                           moved=true;
                       }
                       break;
                   case 2:
-                      if (positions[x][Math.min(y + 1, ly - 1)] == null) {
+                      if (positions[x][(y+1)%ly] == null) {
                           result[0] = x;
-                          result[1] = Math.min(y + 1, ly - 1);
+                          result[1] = (y+1)%ly;
                           moved=true;
                       }
                       break;
                   case 3:
-                      if (positions[Math.min(x + 1, lx - 1)][Math.min(y + 1, ly - 1)] == null) {
-                          result[0] = Math.min(x + 1, lx - 1);
-                          result[1] = Math.min(y + 1, ly - 1);
+                      if (positions[(x+1)%lx][(y+1)%ly] == null) {
+                          result[0] = (x+1)%lx;
+                          result[1] = (y+1)%ly;
                           moved=true;
                       }
                       break;
                   case 4:
-                      if (positions[Math.min(x + 1, lx - 1)][y] == null) {
-                          result[0] = Math.min(x + 1, lx - 1);
+                      if (positions[(x+1)%lx][y] == null) {
+                          result[0] =(x+1)%lx;
                           result[1] = y;
                           moved=true;
                       }
                       break;
                   case 5:
-                      if (positions[Math.min(x + 1, lx - 1)][Math.max(y - 1, 0)] == null) {
-                          result[0] = Math.min(x + 1, lx - 1);
-                          result[1] = Math.max(y - 1, 0);
+                      if (positions[(x+1)%lx][(y-1+ly)%ly] == null) {
+                          result[0] = (x+1)%lx;
+                          result[1] = (y-1+ly)%ly;
                           moved=true;
                       }
                       break;
                   case 6:
-                      if (positions[x][Math.max(y - 1, 0)] == null) {
+                      if (positions[x][(y-1+ly)%ly] == null) {
                           result[0] = x;
-                          result[1] = Math.max(y - 1, 0);
+                          result[1] = (y-1+ly)%ly;
                           moved=true;
                       }
                       break;
                   case 7:
-                      if (positions[Math.max(x - 1, 0)][Math.max(y - 1, 0)] == null) {
-                          result[0] = Math.max(x - 1, 0);
-                          result[1] = Math.max(y - 1, 0);
+                      if (positions[(x-1+lx)%lx][(y-1+ly)%ly] == null) {
+                          result[0] = (x-1+lx)%lx;
+                          result[1] = (y-1+ly)%ly;
                           moved=true;
                       }
                       break;
@@ -178,11 +186,11 @@ public final class Monster extends Observable{
              direction= (direction+1) % 7;
 
              count--;
-              if(count==0 || moved)
+              if(count==-1 || moved)
                   break;
          }
 
-       if(count==0){//stay at the same place
+       if(count==-1){//stay at the same place
          result[0] = x;
          result[1] = y;
            moved=true;
@@ -199,8 +207,8 @@ public final class Monster extends Observable{
        result[2]=this.isVulnerable()?1:0;
        result[3]=positions;
        //positions[x][y]=null;
-
-      // notifyObservers(result);
+      setChanged();
+       notifyObservers(result);
 
 
 
@@ -208,6 +216,8 @@ public final class Monster extends Observable{
        return  result;
 
    }
+
+
 
 
 //=======

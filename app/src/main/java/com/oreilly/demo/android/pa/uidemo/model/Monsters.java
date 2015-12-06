@@ -105,15 +105,11 @@ public class Monsters implements Observer , OnTickListener{
         for(int i=0;i<l;i++){//update all the monsters
             Object arg= getMonsters().get(i).move(positions,ra);
 
-            Object[] r=(Object[])arg;
+            /*Object[] r=(Object[])arg;
             Monster newMonster=new Monster((int)r[0],(int)r[1],(int)r[2]==1);
-            //Monster newMonster=new Monster(1,1,true);
-            //monsters.remove(o);
             newMonster.addObserver(this);
             monsters.add(newMonster);
-
-            //((Monster[][])r[3])[(int)r[0]][(int)r[1]]=newMonster;
-            positions[(int)r[0]][(int)r[1]]=newMonster;
+            positions[(int)r[0]][(int)r[1]]=newMonster;*/
 
              // getMonsters().get(i).moved=false;
 
