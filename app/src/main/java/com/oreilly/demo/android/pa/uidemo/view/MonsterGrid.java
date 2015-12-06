@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.oreilly.demo.android.pa.uidemo.R;
+import com.oreilly.demo.android.pa.uidemo.model.Clock.OnTickListener;
 import com.oreilly.demo.android.pa.uidemo.model.Monster;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 
@@ -20,13 +21,15 @@ import java.util.Random;
 /**
  * Created by Group 03 on 12/1/15.
  */
-public class MonsterGrid extends View {
+public class MonsterGrid extends View implements OnTickListener {
 
     static final int FINGER_TARGET_SIZE_DP = 36;
+    static final int MONSTERS_TOTAL=20;
 
     private int row;
     private int column;
     private int squareWidth;
+    private int squareHeight;
     private int leftMargin;
     private int rightMargin;
     private int topMargin;
@@ -34,7 +37,9 @@ public class MonsterGrid extends View {
     private int displayWidth;
     private int displayHeight;
     private Monsters monsters;
-    private int[][] positions;
+    //private Monster[][] positions;
+    private  Paint paint = new Paint();
+    private boolean ifInit =false;
 
     /**
      * @param context the rest of the application
@@ -42,6 +47,8 @@ public class MonsterGrid extends View {
     public MonsterGrid(Context context) {
         super(context);
         setFocusableInTouchMode(true);
+        //initializeMeasures(context);
+       // initializeMonsters();
     }
 
     /**
@@ -51,6 +58,8 @@ public class MonsterGrid extends View {
     public MonsterGrid(Context context, AttributeSet attrs) {
         super(context, attrs);
         setFocusableInTouchMode(true);
+        //initializeMeasures(context);
+        //initializeMonsters();
     }
 
     /**
@@ -61,6 +70,8 @@ public class MonsterGrid extends View {
     public MonsterGrid(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setFocusableInTouchMode(true);
+        //initializeMeasures(context);
+        //initializeMonsters();
     }
 
     public void setMonsters(Monsters monsters){
@@ -79,8 +90,13 @@ public class MonsterGrid extends View {
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override protected void onDraw(Canvas canvas) {
+        if(!ifInit){
         initializeMeasures();
-        Paint paint = new Paint();
+        //initializeMonsters();
+            ifInit=true;
+        }
+
+
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLACK);
 
@@ -97,17 +113,21 @@ public class MonsterGrid extends View {
                     * squareWidth, displayHeight - bottomMargin, paint);
         }
 
-        initializeMonsters(canvas,paint);
+        //updateMonsters();
+        drawMonsters(canvas,paint);
+        invalidate();
+
     }
 
-    private void initializeMeasures(){
+    public void initializeMeasures(){
 
         displayHeight = getHeight() - 10;
         displayWidth = getWidth() - 10;
 
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        //DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         squareWidth = Math.round(FINGER_TARGET_SIZE_DP * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-
+        squareHeight = Math.round(FINGER_TARGET_SIZE_DP * (displayMetrics.ydpi / DisplayMetrics.DENSITY_DEFAULT));
         row = displayHeight / squareWidth;
         column = displayWidth / squareWidth;
 
@@ -116,28 +136,30 @@ public class MonsterGrid extends View {
         topMargin = (displayHeight % squareWidth) / 2;
         bottomMargin = (displayHeight % squareWidth) - (displayHeight % squareWidth) / 2;
 
-        positions = new int[column][row];
+        //positions = new Monster[column][row];
 
-        for(int i = 0 ; i < column ; i++)
-            for(int j = 0 ; j < row ; j++)
-                positions[i][j] = 0;
+
+
+        monsters.column=column;
+        monsters.row=row;
+        monsters.initializeMonsters();
+       // monsters.positions=positions;
     }
 
-    private void initializeMonsters(Canvas canvas, Paint paint){
 
-        Random rand = new Random();
-        for(int i = 0 ; i < 10 ; i++){
-            boolean exist = true;
-            while (exist){
-                int x = rand.nextInt(column);
-                int y = rand.nextInt(row);
-                if(positions[x][y]==0){
-                    exist = false;
-                    positions[x][y]=1;
-                    this.monsters.addMonster(x, y, i%2==0);
-                    monsters.getLastMonster().draw(canvas,  getContext(), squareWidth, leftMargin, topMargin, paint);
-                }
-            }
-        }
+
+
+
+    private void drawMonsters(Canvas canvas, Paint paint){
+       // for(Monster monster : monsters.getMonsters())
+          //monster.draw(canvas, getContext(), squareWidth, leftMargin, topMargin, paint);
+        for(int i=0;i<monsters.getMonsters().size();i++)
+            monsters.getMonsters().get(i).draw(canvas, getContext(), squareWidth, leftMargin, topMargin, paint);
     }
+
+    public void onTick(){
+       // monsters.updateMonsters();
+        //invalidate();
+    }
+
 }
