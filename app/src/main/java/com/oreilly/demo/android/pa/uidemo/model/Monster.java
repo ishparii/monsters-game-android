@@ -9,18 +9,23 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 
-import com.oreilly.demo.android.pa.uidemo.R;
-
-<<<<<<< HEAD
 import java.util.Observable;
 import java.util.Random;
 import java.util.ArrayList;
-=======
+
+import com.oreilly.demo.android.pa.uidemo.R;
+
+//<<<<<<< HEAD
+import java.util.Observable;
 import java.util.Random;
->>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
+import java.util.ArrayList;
+//=======
+
+import java.util.Random;
+//>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 
 /** A monster: the coordinates and status */
-public final class Monster extends AsyncTask {
+public final class Monster extends Observable{
     private int x;
     private int y;
     private boolean isVulnerable;
@@ -60,7 +65,7 @@ public final class Monster extends AsyncTask {
         return isVulnerable;
     }
 
-    @Override
+    //@Override
     protected Object doInBackground(Object[] params) {
         return null;
     }
@@ -77,13 +82,13 @@ public final class Monster extends AsyncTask {
 
     }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     public boolean equals(Object obj){
         if(!(obj instanceof Monster))
            return false;
         if(obj==this)
             return true;
-        if (  ((Monster)obj).getX()==getX() && ((Monster)obj).getY()==getY() && ((Monster)obj).getStatus()==getStatus())
+        if (  ((Monster)obj).getX()==getX() && ((Monster)obj).getY()==getY() && ((Monster)obj).isVulnerable()==isVulnerable())
              return true;
         else
              return false;
@@ -191,7 +196,7 @@ public final class Monster extends AsyncTask {
        //result[1]=1;
        positions[x][y]=null;
        //positions[(int)result[0]][(int)result[1]]=this;
-       result[2]=this.getStatus()?1:0;
+       result[2]=this.isVulnerable()?1:0;
        result[3]=positions;
        //positions[x][y]=null;
 
@@ -205,8 +210,8 @@ public final class Monster extends AsyncTask {
    }
 
 
-=======
-    public void remove(Canvas canvas, int squareWidth, int leftMargin, int topMargin, Paint paint) {
+//=======
+    /*public void remove(Canvas canvas, int squareWidth, int leftMargin, int topMargin, Paint paint) {
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRect(getX()*squareWidth + leftMargin, getY()*squareWidth + topMargin, squareWidth, squareWidth, paint);
@@ -218,6 +223,6 @@ public final class Monster extends AsyncTask {
         x = getX() + (rand.nextInt(3)-1);
         y = getY() + (rand.nextInt(3)-1);
         draw(canvas, context, squareWidth, leftMargin, topMargin, paint);
-    }
->>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
+    }*/
+//>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 }

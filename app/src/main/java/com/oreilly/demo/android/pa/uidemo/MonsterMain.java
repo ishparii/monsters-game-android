@@ -10,12 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-<<<<<<< HEAD
-import com.oreilly.demo.android.pa.uidemo.model.Clock.ClockModel;
-import com.oreilly.demo.android.pa.uidemo.model.Clock.ConcreteClock;
-=======
+//<<<<<<< HEAD
+//import com.oreilly.demo.android.pa.uidemo.model.Clock.ClockModel;
+//import com.oreilly.demo.android.pa.uidemo.model.Clock.ConcreteClock;
+//=======
 import com.oreilly.demo.android.pa.uidemo.model.Clock;
->>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
+//>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
@@ -152,19 +152,20 @@ public class MonsterMain extends Activity {
 //    DotGenerator dotGenerator;
 
     /** Called when the activity is first created. */
-<<<<<<< HEAD
+//<<<<<<< HEAD
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        ClockModel clock=new ConcreteClock();
+         Clock clock=new Clock();
         clock.setOnTickListener(monstersModel);
         clock.start();
 
 
 
-=======
-    @Override public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
->>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
+//=======
+   // @Override
+     //   public void onCreate(Bundle savedInstanceState) {
+         //super.onCreate(savedInstanceState);
+//>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 
         //install the countdown timer
         setContentView(R.layout.monster_main);
@@ -269,10 +270,10 @@ public class MonsterMain extends Activity {
 
 
     /** Install an options menu. */
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+   /* @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.simple_menu, menu);
         return true;
-    }
+    }*/
 
     /** Respond to an options menu selection. */
 //    @Override public boolean onOptionsItemSelected(MenuItem item) {
