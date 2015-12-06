@@ -7,14 +7,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 
 import com.oreilly.demo.android.pa.uidemo.R;
 
-import java.util.Observable;
+import java.util.Random;
 
 /** A monster: the coordinates and status */
-public final class Monster extends Observable {
-    private final int x, y;
+public final class Monster extends AsyncTask {
+    private int x;
+    private int y;
     private boolean isVulnerable;
 
     /**
@@ -39,13 +41,18 @@ public final class Monster extends Observable {
     }
 
     /** @return the status. */
-    public boolean getStatus() {
+    public boolean isVulnerable() {
         return isVulnerable;
+    }
+
+    @Override
+    protected Object doInBackground(Object[] params) {
+        return null;
     }
 
     public void draw(Canvas canvas, Context context, int squareWidth, int leftMargin, int topMargin, Paint paint ){
         Bitmap image;
-        if(getStatus()){
+        if(isVulnerable()){
             image = BitmapFactory.decodeResource(context.getResources(), R.drawable.orange_monster);
         } else{
             image = BitmapFactory.decodeResource(context.getResources(), R.drawable.green_monster);
@@ -53,5 +60,19 @@ public final class Monster extends Observable {
         Bitmap imageScaled = Bitmap.createScaledBitmap(image,squareWidth,squareWidth, false);
         canvas.drawBitmap(imageScaled, getX()*squareWidth + leftMargin, getY()*squareWidth + topMargin, paint);
 
+    }
+
+    public void remove(Canvas canvas, int squareWidth, int leftMargin, int topMargin, Paint paint) {
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(getX()*squareWidth + leftMargin, getY()*squareWidth + topMargin, squareWidth, squareWidth, paint);
+    }
+
+    public void move(Canvas canvas, Context context, int squareWidth, int leftMargin, int topMargin, Paint paint) {
+        remove(canvas, squareWidth, leftMargin, topMargin, paint);
+        Random rand = new Random();
+        x = getX() + (rand.nextInt(3)-1);
+        y = getY() + (rand.nextInt(3)-1);
+        draw(canvas, context, squareWidth, leftMargin, topMargin, paint);
     }
 }
