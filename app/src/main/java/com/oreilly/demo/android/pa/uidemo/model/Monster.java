@@ -183,7 +183,7 @@ public final class Monster extends Observable{
                       break;
               }
 
-             direction= (direction+1) % 7;
+             direction= (direction+1) % 8;
 
              count--;
               if(count==-1 || moved)
