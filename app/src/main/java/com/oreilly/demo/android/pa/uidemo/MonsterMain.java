@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.oreilly.demo.android.pa.uidemo.model.Clock.ClockModel;
+import com.oreilly.demo.android.pa.uidemo.model.Clock.ConcreteClock;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by Team 03 on 12/1/15.
+ * Created by Group 03 on 12/1/15.
  */
 public class MonsterMain extends Activity {
 
@@ -41,6 +43,8 @@ public class MonsterMain extends Activity {
             int action = evt.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
+
+
                 case MotionEvent.ACTION_POINTER_DOWN:
                     idx = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
                             >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
@@ -139,18 +143,30 @@ public class MonsterMain extends Activity {
     /** Called when the activity is first created. */
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        ClockModel clock=new ConcreteClock();
+        clock.setOnTickListener(monstersModel);
+        clock.start();
+
+
+
 
         // install the view
         setContentView(R.layout.monster_main);
 
         // find the monster view
         monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
+        //clock.setOnTickListener(monsterGrid);
+
+
+
+
         //monsterGrid.initializeMeasures();
 
         monsterGrid.setMonsters(monstersModel);
 
         monsterGrid.setOnCreateContextMenuListener(this);
         monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel));
+
 
         monsterGrid.setOnKeyListener(new View.OnKeyListener() {
             @Override

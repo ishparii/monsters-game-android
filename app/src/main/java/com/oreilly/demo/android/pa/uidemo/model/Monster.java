@@ -183,7 +183,7 @@ public final class Monster extends Observable {
        result[3]=positions;
        //positions[x][y]=null;
 
-       notifyObservers(result);
+      // notifyObservers(result);
 
 
 
