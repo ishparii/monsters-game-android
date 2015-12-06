@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Button;
 
 //<<<<<<< HEAD
 //import com.oreilly.demo.android.pa.uidemo.model.Clock.ClockModel;
@@ -144,8 +145,11 @@ public class MonsterMain extends Activity {
     MonsterGrid monsterGrid;
 
     TextView textViewTimer;
+    Button buttonStart, buttonStop;
     //adjust the format h:m:s
     private static final String FORMAT = "%02d:%02d:%02d";
+
+
 
 
     /** The dot generator */
@@ -171,8 +175,12 @@ public class MonsterMain extends Activity {
         setContentView(R.layout.monster_main);
 
         textViewTimer = (TextView) findViewById(R.id.clockView);
-        new CountDownTimer (60000,1000){
+        buttonStart = (Button) findViewById(R.id.start);
+        buttonStop = (Button) findViewById(R.id.stop);
+        textViewTimer.setText("00:01:00");
 
+
+        final CountDownTimer timer = new CountDownTimer(60000,1000){
 
             public void onTick(long millisUntilFinished){
                 textViewTimer.setText(""+String.format(FORMAT,
@@ -188,7 +196,23 @@ public class MonsterMain extends Activity {
             public void onFinish(){
                 textViewTimer.setText("Time is Up!");
             }
-        }.start();
+        };
+
+        buttonStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    timer.start();
+
+            }
+        });
+
+        buttonStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timer.cancel();
+            }
+        });
+
 
 
         // install the view
