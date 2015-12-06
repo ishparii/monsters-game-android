@@ -1,24 +1,24 @@
-package com.oreilly.demo.android.pa.uidemo.model.Clock;
+package com.oreilly.demo.android.pa.uidemo.model;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by annezhao on 12/4/15.
+ * Created by Group 03 on 12/4/15.
  */
-public class ConcreteClock implements ClockModel{
+public class Clock {
+
+    public interface OnTickListener{
+        void onTick();
+    }
 
     Timer timer = new Timer();
-    OnTickListener onTickListener;
+    private OnTickListener onTickListener;
 
-    @Override
     public void setOnTickListener(OnTickListener onTickListener){
         this.onTickListener = onTickListener;
     }
 
-
-
-    @Override
     public void start() {
         timer.schedule(new TimerTask() {
             @Override
@@ -28,8 +28,7 @@ public class ConcreteClock implements ClockModel{
         },1000,1000);
     }
 
-    @Override
-    public void stop(){
-        timer.cancel();
-    }
+//    public void stop(){
+//        timer.cancel();
+//    }
 }

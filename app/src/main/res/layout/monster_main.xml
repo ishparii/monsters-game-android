@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
 
@@ -11,17 +12,20 @@
         android:background="@color/grey">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/clock"
-            android:text="@string/clock"
-            android:layout_weight="1" android:textSize="40dp" android:layout_marginRight="5dp"
-            android:numeric="integer"/>
+            android:id="@+id/clockView"
+            android:layout_weight="1"
+            android:textSize="40dp"
+            android:layout_marginRight="5dp"
+            android:numeric="integer"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/counter"
+            android:id="@+id/pointsView"
             android:layout_weight="1"
             android:text="@string/points" android:textSize="40dp" android:textAlignment="center"
             android:numeric="integer" android:layout_marginLeft="10dp"/>

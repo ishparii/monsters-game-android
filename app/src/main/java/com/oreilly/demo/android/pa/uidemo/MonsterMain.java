@@ -2,22 +2,27 @@ package com.oreilly.demo.android.pa.uidemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
-import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.oreilly.demo.android.pa.uidemo.model.Clock.ClockModel;
 import com.oreilly.demo.android.pa.uidemo.model.Clock.ConcreteClock;
+=======
+import com.oreilly.demo.android.pa.uidemo.model.Clock;
+>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Group 03 on 12/1/15.
@@ -133,14 +138,21 @@ public class MonsterMain extends Activity {
 
     /** The application model */
     final Monsters monstersModel = new Monsters();
+    final Clock clockModel = new Clock();
 
     /** The application view */
     MonsterGrid monsterGrid;
+
+    TextView textViewTimer;
+    //adjust the format h:m:s
+    private static final String FORMAT = "%02d:%02d:%02d";
+
 
     /** The dot generator */
 //    DotGenerator dotGenerator;
 
     /** Called when the activity is first created. */
+<<<<<<< HEAD
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         ClockModel clock=new ConcreteClock();
@@ -149,9 +161,39 @@ public class MonsterMain extends Activity {
 
 
 
+=======
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
+
+        //install the countdown timer
+        setContentView(R.layout.monster_main);
+
+        textViewTimer = (TextView) findViewById(R.id.clockView);
+        new CountDownTimer (60000,1000){
+
+
+            public void onTick(long millisUntilFinished){
+                textViewTimer.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)
+                                - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+                ));
+            }
+
+            public void onFinish(){
+                textViewTimer.setText("Time is Up!");
+            }
+        }.start();
+
 
         // install the view
-        setContentView(R.layout.monster_main);
+        //setContentView(R.layout.monster_main);
+
+
 
         // find the monster view
         monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
@@ -190,11 +232,13 @@ public class MonsterMain extends Activity {
 //                makeDot(dotModel, dotView, color);
 
                 return true;
-            } });
+            }
+        });
 
 
         monsterGrid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override public void onFocusChange(View v, boolean hasFocus) {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
 //                if (!hasFocus && (null != dotGenerator)) {
 //                    dotGenerator.done();
 //                    dotGenerator = null;
@@ -204,32 +248,25 @@ public class MonsterMain extends Activity {
 //                            = new DotGenerator(dotModel, dotView, Color.BLACK);
 //                    new Thread(dotGenerator).start();
 //                }
-            } });
+            }
+        });
 
-        // wire up the controller
-//        ((Button) findViewById(R.id.button1)).setOnClickListener(
-//                new Button.OnClickListener() {
-//                    @Override public void onClick(View v) {
-//                        makeDot(dotModel, dotView, Color.RED);
-//                    } });
-//        ((Button) findViewById(R.id.button2)).setOnClickListener(
-//                new Button.OnClickListener() {
-//                    @Override public void onClick(View v) {
-//                        makeDot(dotModel, dotView, Color.GREEN);
-//                    } });
+        clockModel.setOnTickListener(new Clock.OnTickListener() {
+            @Override
+            public void onTick() {
+                TextView textView = (TextView) findViewById(R.id.clockView);
+                int displayTime = Integer.parseInt(textView.getText().toString());
+                displayTime--;
+                textView.setText(String.valueOf(displayTime));
+            }
 
-        //final EditText tb1 = (EditText) findViewById(R.id.text1);
-        //final EditText tb2 = (EditText) findViewById(R.id.text2);
-//        dotModel.setDotsChangeListener(new Dots.DotsChangeListener() {
-//            @Override public void onDotsChange(Dots dots) {
-//                Dot d = dots.getLastDot();
-//                // This code makes the UI unacceptably unresponsive.
-//                // ... investigating - in March, 2014, this was not a problem
-//                tb1.setText((null == d) ? "" : String.valueOf(d.getX())); // uncommented
-//                tb2.setText((null == d) ? "" : String.valueOf(d.getY())); // uncommented
-//                dotView.invalidate();
-//            } });
+        });
+
+//        clockModel.start();
+
+
     }
+
 
     /** Install an options menu. */
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -238,38 +275,41 @@ public class MonsterMain extends Activity {
     }
 
     /** Respond to an options menu selection. */
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_restart:
-                //dotModel.clearDots();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menu_restart:
+//                clockModel.start();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     /** Install a context menu. */
-    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(Menu.NONE, 1, Menu.NONE, "Restart").setAlphabeticShortcut('r');
-    }
+//    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        menu.add(Menu.NONE, 1, Menu.NONE, "Restart").setAlphabeticShortcut('r');
+//    }
 
     /** Respond to a context menu selection. */
-    @Override public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case 1:
-                //dotModel.clearDots();
-                return true;
-            default: ;
-        }
-        return false;
-    }
+//    @Override public boolean onContextItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case 1:
+//                new Thread();
+//                clockModel.start();
+//
+//
+//               return true;
+//            default: ;
+//       }
+//        return false;
+//    }
 
 //    /**
 //     * @param dots the dots we're drawing
 //     * @param view the view in which we're drawing dots
 //     * @param color the color of the dot
 //     */
+
     void makeMonster(Monsters monsters, MonsterGrid monsterGrid) {
 
 
@@ -280,4 +320,5 @@ public class MonsterMain extends Activity {
 //                color,
 //                DOT_DIAMETER);
     }
+
 }
