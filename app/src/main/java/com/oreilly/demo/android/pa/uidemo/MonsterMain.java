@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import com.oreilly.demo.android.pa.uidemo.model.Clock;
 //>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
+import com.oreilly.demo.android.pa.uidemo.model.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,23 +34,47 @@ public class MonsterMain extends Activity {
 
     /** finger target size*/
     static final int FINGER_TARGET_SIZE_DP = 36;
+    public static DisplayMetrics displayMetrics = new DisplayMetrics();
+
 
     /** Listen for taps. */
     private static final class TrackingTouchListener implements View.OnTouchListener {
 
         private final Monsters mMonsters;
+        private final MonsterGrid monsterGrid;
         private List<Integer> tracks = new ArrayList<Integer>();
 
-        TrackingTouchListener(Monsters mMonsters) {
+        TrackingTouchListener(Monsters mMonsters,MonsterGrid monsterGrid) {
             this.mMonsters = mMonsters;
+            this.monsterGrid=monsterGrid;
         }
 
         @Override public boolean onTouch(View v, MotionEvent evt) {
             int n;
             int idx;
             int action = evt.getAction();
+
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
+
+                   float x=evt.getX() ;
+                    float y=evt.getY();
+                    x=x-monsterGrid.leftMargin;
+                    y=y-monsterGrid.topMargin;
+
+                    x=x/monsterGrid.squareWidth;
+                    y=y/monsterGrid.squareHeight;
+                    System.out.println("Touch!"+(int)x);
+                    System.out.println("Touch!"+(int)y);
+
+
+                     //x=(int)x;
+                     //y=(int)y;
+                    System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
+
+                    break;
+
+
 
 
                 case MotionEvent.ACTION_POINTER_DOWN:
@@ -92,7 +118,7 @@ public class MonsterMain extends Activity {
         }
 
         private void addMonster(int x, int y, boolean isVulnerable) {
-            mMonsters.addMonster(x, y, isVulnerable);
+            //mMonsters.addMonster(x, y, isVulnerable);
         }
     }
 
@@ -163,6 +189,8 @@ public class MonsterMain extends Activity {
         clock.setOnTickListener(monstersModel);
         clock.start();
 
+      getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
 
 
 //=======
@@ -232,7 +260,7 @@ public class MonsterMain extends Activity {
         monsterGrid.setMonsters(monstersModel);
 
         monsterGrid.setOnCreateContextMenuListener(this);
-        monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel));
+        monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel,monsterGrid));
 
 
         monsterGrid.setOnKeyListener(new View.OnKeyListener() {

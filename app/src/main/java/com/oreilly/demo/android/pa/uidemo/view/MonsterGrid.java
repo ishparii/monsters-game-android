@@ -28,11 +28,11 @@ public class MonsterGrid extends View implements OnTickListener {
 
     private int row;
     private int column;
-    private int squareWidth;
-    private int squareHeight;
-    private int leftMargin;
+    public int squareWidth;
+    public int squareHeight;
+    public int leftMargin;
     private int rightMargin;
-    private int topMargin;
+    public int topMargin;
     private int bottomMargin;
     private int displayWidth;
     private int displayHeight;
@@ -114,7 +114,11 @@ public class MonsterGrid extends View implements OnTickListener {
         }
 
         //updateMonsters();
-        drawMonsters(canvas,paint);
+        drawMonsters(canvas, paint);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+        }
         invalidate();
 
     }
@@ -128,13 +132,13 @@ public class MonsterGrid extends View implements OnTickListener {
         //DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         squareWidth = Math.round(FINGER_TARGET_SIZE_DP * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         squareHeight = Math.round(FINGER_TARGET_SIZE_DP * (displayMetrics.ydpi / DisplayMetrics.DENSITY_DEFAULT));
-        row = displayHeight / squareWidth;
+        row = displayHeight / squareHeight;
         column = displayWidth / squareWidth;
 
         leftMargin = (displayWidth % squareWidth) / 2;
         rightMargin = (displayWidth % squareWidth) - (displayWidth % squareWidth) / 2;
-        topMargin = (displayHeight % squareWidth) / 2;
-        bottomMargin = (displayHeight % squareWidth) - (displayHeight % squareWidth) / 2;
+        topMargin = (displayHeight % squareHeight) / 2;
+        bottomMargin = (displayHeight % squareHeight) - (displayHeight % squareHeight) / 2;
 
         //positions = new Monster[column][row];
 

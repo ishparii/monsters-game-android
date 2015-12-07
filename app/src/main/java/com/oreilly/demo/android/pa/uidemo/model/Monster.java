@@ -30,10 +30,22 @@ public final class Monster extends Observable{
     private int y;
     private boolean isVulnerable;
     public boolean moved=false;
-    private AsyncTask<Void,Void,Void> async=new AsyncTask<Void, Void, Void>() {
+
+    public AsyncTask<Object,Void,Void> async=new AsyncTask() {
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(Object... params) {
             //params[0]=(Void)new Object();
+            while(!Monster.this.isMoved()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                }
+
+                Monster[][] positions = (Monster[][]) params;
+                // while(true){
+               Monster.this.move(positions);
+            }
+           // }
             return null;
         }
     };
@@ -96,13 +108,15 @@ public final class Monster extends Observable{
            return false;
         if(obj==this)
             return true;
-        if (  ((Monster)obj).getX()==getX() && ((Monster)obj).getY()==getY() && ((Monster)obj).isVulnerable()==isVulnerable())
+        if (  ((Monster)obj).getX()==getX() && ((Monster)obj).getY()==getY())
              return true;
         else
              return false;
     }
 
-   public Object[] move (Monster[][] positions,Random rand){
+   public synchronized Object[] move (Monster[][] positions){
+
+
        Object[] result=new Object[4];
        int lx=positions.length;
        int ly=positions[0].length;
@@ -115,7 +129,7 @@ public final class Monster extends Observable{
 
        }*/
            int count=7;
-           int direction = rand.nextInt(7);
+           int direction = Monsters.ra.nextInt(8);
 
           while(true){
 
@@ -193,7 +207,7 @@ public final class Monster extends Observable{
        if(count==-1){//stay at the same place
          result[0] = x;
          result[1] = y;
-           moved=true;
+           //moved=true;
        }
 
 
@@ -202,16 +216,23 @@ public final class Monster extends Observable{
        //result[1]=Math.max(y- 1, 0);
        //result[0]=1;
        //result[1]=1;
-       positions[x][y]=null;
+       //positions[x][y]=null;
        //positions[(int)result[0]][(int)result[1]]=this;
        result[2]=this.isVulnerable()?1:0;
-       result[3]=positions;
+       result[3]=this;
+
+
+
+       //x=(int)(result[0]);
+       //y=(int)(result[1]);
+       //positions[x][y]=this;
+
        //positions[x][y]=null;
-      setChanged();
-       notifyObservers(result);
+       if(moved){
 
-
-
+         setChanged();
+           notifyObservers(result);
+       }
 
        return  result;
 

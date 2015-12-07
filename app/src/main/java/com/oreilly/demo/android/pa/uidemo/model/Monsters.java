@@ -29,7 +29,7 @@ public class Monsters implements Observer , OnTickListener{
     public int row;
     public Monster[][] positions;
     public final int MONSTERS_TOTAL=20;
-    private Random ra=new Random();
+    public static  Random ra=new Random();
 
     /** @param l set the change listener. */
     public void setMonstersChangeListener(MonstersChangeListener l) {
@@ -51,13 +51,20 @@ public class Monsters implements Observer , OnTickListener{
      * @param y vertical coordinate at top left corner
      * @param isVulnerable status of monster.
       */
-    public Monster addMonster(int x, int y, boolean isVulnerable) {
-        Monster newMonster=new Monster(x, y, isVulnerable);
+    public Monster addMonster(Monster newMonster) {
+        //Monster newMonster=new Monster(x, y, isVulnerable);
+        newMonster.async.execute((Object[]) positions);
         newMonster.addObserver(this);
         monsters.add(newMonster);
+        positions[newMonster.getX()][newMonster.getY()]=newMonster;
 
-        notifyListener();
+       // notifyListener();
         return newMonster;
+    }
+
+    public boolean removeMonster(Monster monster){
+         positions[monster.getX()][monster.getY()] = null;
+        return monsters.remove(monster);
     }
 
     public void removeMonster(int x, int y){
@@ -80,18 +87,18 @@ public class Monsters implements Observer , OnTickListener{
     public void update(Observable o, Object arg){
         Object[] r=(Object[])arg;
        Monster newMonster=new Monster((int)r[0],(int)r[1],(int)r[2]==1);
-        //Monster newMonster=new Monster(1,1,true);
-        //monsters.remove(o);
-        newMonster.addObserver(this);
-        monsters.add(newMonster);
+        positions[((Monster)r[3]).getX()][((Monster)r[3]).getY()]=null;
 
-        //((Monster[][])r[3])[(int)r[0]][(int)r[1]]=newMonster;
-        positions[(int)r[0]][(int)r[1]]=newMonster;
+        addMonster(newMonster);
+       // removeMonster(new );
+       monsters.remove(r[3]);
+       // positions[(int)r[0]][(int)r[1]]=newMonster;
+
 
     }
 
     public void onTick(){
-        updateMonsters();
+       // updateMonsters();
     }
 
     public void updateMonsters(){
@@ -103,7 +110,7 @@ public class Monsters implements Observer , OnTickListener{
         int l=getMonsters().size();
 
         for(int i=0;i<l;i++){//update all the monsters
-            Object arg= getMonsters().get(i).move(positions,ra);
+           // Object arg= getMonsters().get(i).move(positions);
 
             /*Object[] r=(Object[])arg;
             Monster newMonster=new Monster((int)r[0],(int)r[1],(int)r[2]==1);
@@ -151,7 +158,8 @@ public class Monsters implements Observer , OnTickListener{
                 int y = rand.nextInt(row);
                 if (positions[x][y]==null){
                     exist = false;
-                    positions[x][y]= addMonster(x, y, i%2==0);
+                    Monster newMonster=new Monster(x,y,i%2==0);
+                     addMonster(newMonster);
                     //monsters.getLastMonster().draw(canvas,  getContext(), squareWidth, leftMargin, topMargin, paint);
                 }
             }
