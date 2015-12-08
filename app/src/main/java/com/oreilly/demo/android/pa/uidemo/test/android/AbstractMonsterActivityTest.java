@@ -36,6 +36,10 @@ public abstract class AbstractMonsterActivityTest {
             @Override
             public void run() {
                 assertEquals(0, getPoint());
+                assertEquals(30, getTimerValue());
+                assertTrue(getStartButton().isEnabled());
+                assertTrue(!getStartButton().isEnabled());
+
             }
         });
     }
@@ -45,6 +49,35 @@ public abstract class AbstractMonsterActivityTest {
      *
      * @throws Throwable
      */
+
+    @Test
+    public void testActivityScenarioCountDown() throws Throwable {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                assertEquals(0, getPoint());
+                assertEquals(30, getTimerValue());
+                assertTrue(getStartButton().performClick());
+
+            }
+        });
+        Thread.sleep(2000);
+        runUiThreadTasks();
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(28, getTimerValue());
+        }});
+
+        Thread.sleep(5000);
+        runUiThreadTasks();
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(23, getTimerValue());
+        }});
+        Thread.sleep(23000);
+        runUiThreadTasks();
+        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
+            assertEquals(0, getTimerValue());
+        }});
+    }
 
 //    @Test
 //    public void testActivityScenarioInc() throws Throwable {
