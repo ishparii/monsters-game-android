@@ -42,4 +42,5 @@ dependencies {
     compile 'junit:junit:4.12'
     compile 'net.sourceforge.streamsupport:streamsupport:1.2.1'
     testCompile 'org.robolectric:robolectric:2.4'
+    testCompile 'junit:junit:4.12'   //added
 }

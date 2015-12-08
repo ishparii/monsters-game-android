@@ -1,1 +1,0 @@
-package com.oreilly.demo.android.pa.uidemo;

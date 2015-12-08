@@ -5,6 +5,8 @@ import android.widget.TextView;
 
 import com.oreilly.demo.android.pa.uidemo.MonsterMain;
 import com.oreilly.demo.android.pa.uidemo.R;
+import com.oreilly.demo.android.pa.uidemo.model.Monster;
+import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 
 import org.junit.Test;
 
@@ -37,8 +39,11 @@ public abstract class AbstractMonsterActivityTest {
             public void run() {
                 assertEquals(0, getPoint());
             }
+
         });
     }
+
+
 
     /**
      * Verifies the following scenario: time is 0, press button 5 times, wait 2.5 seconds, expect runtime value 5.
@@ -122,6 +127,29 @@ public abstract class AbstractMonsterActivityTest {
 //        }});
 //    }
 
+
+    @Test
+    public void testActivityScenarioStop() throws Throwable{
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getStartButton().performClick();
+            }
+        });
+        Thread.sleep(2000);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getStopButton().performClick();
+                assertEquals(0, getTimerValue());
+                assertEquals(0, getPoint());
+                assertEquals(0, getTimerValue());
+                assertEquals(0, getPoint());
+            }
+        });
+    }
+
+
     // auxiliary methods for easy access to UI widgets
 
     protected abstract MonsterMain getActivity();
@@ -147,6 +175,7 @@ public abstract class AbstractMonsterActivityTest {
     protected Button getStopButton() {
         return (Button) getActivity().findViewById(R.id.stop);
     }
+
     /**
      * Explicitly runs tasks scheduled to run on the UI thread in case this is required
      * by the testing framework, e.g., Robolectric.
