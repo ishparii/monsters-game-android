@@ -39,7 +39,7 @@ public abstract class AbstractMonsterActivityTest {
                 assertEquals(0, getPoint());
                 assertEquals(30, getTimerValue());
                 assertTrue(getStartButton().isEnabled());
-                assertTrue(!getStartButton().isEnabled());
+                assertTrue(!getStopButton().isEnabled());
 
             }
         });
@@ -58,8 +58,8 @@ public abstract class AbstractMonsterActivityTest {
             public void run() {
                 assertEquals(0, getPoint());
                 assertEquals(30, getTimerValue());
+                assertTrue(getStartButton().isEnabled());
                 assertTrue(getStartButton().performClick());
-
             }
         });
         Thread.sleep(2000);
@@ -73,90 +73,7 @@ public abstract class AbstractMonsterActivityTest {
         getActivity().runOnUiThread(new Runnable() { @Override public void run() {
             assertEquals(23, getTimerValue());
         }});
-        Thread.sleep(23000);
-        runUiThreadTasks();
-        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-            assertEquals(0, getTimerValue());
-        }});
     }
-
-//    @Test
-//    public void testActivityScenarioInc() throws Throwable {
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                assertEquals(0, getDisplayedValue());
-//                for (int i = 0; i < 5; i++) {
-//                    assertTrue(getStartStopButton().performClick());
-//                }
-//            }
-//        });
-//        Thread.sleep(2500);
-//        runUiThreadTasks();
-//        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-//            assertEquals(5, getDisplayedValue());
-//        }});
-//    }
-//
-//
-//    /**
-//     * Verifies the following scenario: time is 0, press button 5 times, wait 2+ seconds,
-//     * expect time 5, press button 4 more times, wait 1 seconds, expect time 9, wait 2+ seconds,
-//     * expect time 9, wait 1 seconds, expect time 8, wait 6 seconds, expect time 2.
-//     *
-//     * @throws Throwable
-//     */
-//    @Test
-//    public void testActivityScenarioRun() throws Throwable {
-//        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-//            assertEquals(0, getDisplayedValue());
-//            for (int i = 0; i < 5; i++) {
-//                assertTrue(getStartStopButton().performClick());
-//            }
-//        }});
-//        Thread.sleep(2500); // <-- do not run this in the UI thread!
-//        runUiThreadTasks();
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                assertEquals(5, getDisplayedValue());
-//                for (int i = 0; i < 4; i++) {
-//                    assertTrue(getStartStopButton().performClick());
-//                }
-//            }
-//        });
-//        Thread.sleep(1000); // <-- do not run this in the UI thread!
-//        runUiThreadTasks();
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                assertEquals(9, getDisplayedValue());
-//            }
-//        });
-//        Thread.sleep(2500);
-//        runUiThreadTasks();
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                assertEquals(9, getDisplayedValue());
-//            }
-//        });
-//        Thread.sleep(1000);
-//        runUiThreadTasks();
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                assertEquals(8, getDisplayedValue());
-//            }
-//        });
-//        Thread.sleep(6000);
-//        runUiThreadTasks();
-//        getActivity().runOnUiThread(new Runnable() { @Override public void run() {
-//            assertEquals(2, getDisplayedValue());
-//        }});
-//    }
-
-    // auxiliary methods for easy access to UI widgets
 
     protected abstract MonsterMain getActivity();
 
