@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 import com.oreilly.demo.android.pa.uidemo.R;
+import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
 //<<<<<<< HEAD
 import java.util.Observable;
@@ -30,24 +31,47 @@ public final class Monster extends Observable{
     private int y;
     private boolean isVulnerable;
     public boolean moved=false;
+    //public MonsterGrid monsterGrid;
 
-    public AsyncTask<Object,Void,Void> async=new AsyncTask() {
+    public Async async=new Async();
+
+    public static class Async extends AsyncTask<Object,Void,Monster> {
         @Override
-        protected Void doInBackground(Object... params) {
+        protected Monster doInBackground(Object... params) {
+            System.out.println("Do in background");
+
+            Monster[][] positions = (Monster[][]) params[0];
+            Monster m=(Monster) params[1];
+            m.moved=false;
+
             //params[0]=(Void)new Object();
-            while(!Monster.this.isMoved()) {
+            //while(!m.isMoved()) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(80);
                 } catch (InterruptedException e) {
                 }
 
-                Monster[][] positions = (Monster[][]) params;
+
                 // while(true){
-               Monster.this.move(positions);
-            }
+               m.move(positions);
            // }
-            return null;
+
+           // }
+
+            return m;
         }
+
+        @Override
+        protected void onPostExecute(Monster m) {
+            // showDialog("Downloaded " + result + " bytes");
+            //s("Downloaded " + result + " bytes");
+            //return;
+
+            m.setChanged();
+            //notifyObservers(result);
+            m.notifyObservers(m);
+        }
+
     };
    // private Observable observable;
     //Random rand=new Random();
@@ -114,12 +138,12 @@ public final class Monster extends Observable{
              return false;
     }
 
-   public synchronized Object[] move (Monster[][] positions){
+   public synchronized Object[] move (Monster[][] positions){ // positions is a matrix
 
 
        Object[] result=new Object[4];
-       int lx=positions.length;
-       int ly=positions[0].length;
+       int lx=positions.length; //lx is the number of rows of the positions
+       int ly=positions[0].length; // ly is the number of columns of the positions
         //moved=true;
       //int startDirection;
       /* ArrayList<Integer> availableDirections=new ArrayList<>();
@@ -210,29 +234,35 @@ public final class Monster extends Observable{
            //moved=true;
        }
 
+       System.out.println("Move");
+       System.out.println("");
+       System.out.println("");
+       System.out.println("");
+       System.out.println("");
+
 
 
        //result[0]=Math.max(x - 1, 0);
        //result[1]=Math.max(y- 1, 0);
        //result[0]=1;
        //result[1]=1;
-       //positions[x][y]=null;
+       positions[x][y]=null;
        //positions[(int)result[0]][(int)result[1]]=this;
        result[2]=this.isVulnerable()?1:0;
        result[3]=this;
 
 
 
-       //x=(int)(result[0]);
-       //y=(int)(result[1]);
-       //positions[x][y]=this;
+       x=(int)(result[0]);
+       y=(int)(result[1]);
+       positions[x][y]=this;
 
        //positions[x][y]=null;
-       if(moved){
+      // if(moved){
 
          setChanged();
-           notifyObservers(result);
-       }
+         notifyObservers(this);
+      // }
 
        return  result;
 

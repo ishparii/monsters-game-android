@@ -16,12 +16,13 @@ import com.oreilly.demo.android.pa.uidemo.model.Clock.OnTickListener;
 import com.oreilly.demo.android.pa.uidemo.model.Monster;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 
-import java.util.Random;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Group 03 on 12/1/15.
  */
-public class MonsterGrid extends View implements OnTickListener {
+public class MonsterGrid extends View implements OnTickListener, Observer{
 
     static final int FINGER_TARGET_SIZE_DP = 36;
     static final int MONSTERS_TOTAL=20;
@@ -90,36 +91,7 @@ public class MonsterGrid extends View implements OnTickListener {
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override protected void onDraw(Canvas canvas) {
-        if(!ifInit){
-        initializeMeasures();
-        //initializeMonsters();
-            ifInit=true;
-        }
-
-
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
-
-        canvas.drawRect(leftMargin, topMargin, displayWidth - rightMargin, displayHeight
-                - bottomMargin, paint);
-
-        for(int i = 0 ; i < row - 1 ; i ++){
-            canvas.drawLine(leftMargin, topMargin + (i+1) * squareWidth, displayWidth - rightMargin,
-                    topMargin + (i+1) * squareWidth , paint);
-        }
-
-        for(int i = 0 ; i < column - 1 ; i ++){
-            canvas.drawLine(leftMargin + (i+1) * squareWidth, topMargin , leftMargin + (i+1)
-                    * squareWidth, displayHeight - bottomMargin, paint);
-        }
-
-        //updateMonsters();
-        drawMonsters(canvas, paint);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-        }
-        invalidate();
+      dra(canvas);
 
     }
 
@@ -164,6 +136,59 @@ public class MonsterGrid extends View implements OnTickListener {
     public void onTick(){
        // monsters.updateMonsters();
         //invalidate();
+    }
+
+
+    @Override
+    public void update(Observable o, Object arg){
+       // Canvas canvas=new Canvas();
+        //onDraw(canvas);
+       // this.onDraw(canvas);
+        //System.out.println("Get Notified");
+       Monster m=(Monster)arg;
+        Object[] params=new Object[2];
+        params[0]=monsters.positions;
+        params[1]=m;
+        m.async=new Monster.Async();
+        m.async.execute(params);
+
+       // Canvas canvas=new Canvas();
+        //dra(canvas);
+    }
+
+
+    public void dra(Canvas canvas){
+        //super.draw(canvas);
+        if(!ifInit){
+            initializeMeasures();
+            //initializeMonsters();
+            ifInit=true;
+        }
+
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.BLACK);
+
+        canvas.drawRect(leftMargin, topMargin, displayWidth - rightMargin, displayHeight
+                - bottomMargin, paint);
+
+        for(int i = 0 ; i < row - 1 ; i ++){
+            canvas.drawLine(leftMargin, topMargin + (i+1) * squareWidth, displayWidth - rightMargin,
+                    topMargin + (i+1) * squareWidth , paint);
+        }
+
+        for(int i = 0 ; i < column - 1 ; i ++){
+            canvas.drawLine(leftMargin + (i+1) * squareWidth, topMargin , leftMargin + (i+1)
+                    * squareWidth, displayHeight - bottomMargin, paint);
+        }
+
+        //updateMonsters();
+        drawMonsters(canvas, paint);
+        try {
+            Thread.sleep(30);
+        } catch (InterruptedException e) {
+        }
+        invalidate();
     }
 
 }

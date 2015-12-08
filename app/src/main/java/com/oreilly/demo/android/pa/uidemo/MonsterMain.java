@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
+import android.graphics.Canvas;
 
 //<<<<<<< HEAD
 //import com.oreilly.demo.android.pa.uidemo.model.Clock.ClockModel;
@@ -70,7 +71,12 @@ public class MonsterMain extends Activity {
 
                      //x=(int)x;
                      //y=(int)y;
-                    System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
+                    if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable())
+                     System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
+                    //Canvas canvas=new Canvas();
+                   // monsterGrid.dra(canvas);
+                    //monsterGrid.update();
+
 
                     break;
 
@@ -165,6 +171,9 @@ public class MonsterMain extends Activity {
 
     /** The application model */
     final Monsters monstersModel = new Monsters();
+
+
+
     final Clock clockModel = new Clock();
 
     /** The application view */
@@ -190,6 +199,8 @@ public class MonsterMain extends Activity {
         clock.start();
 
       getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+
 
 
 
@@ -253,7 +264,7 @@ public class MonsterMain extends Activity {
         //clock.setOnTickListener(monsterGrid);
 
 
-
+        monstersModel.monsterGrid=this.monsterGrid;
 
         //monsterGrid.initializeMeasures();
 

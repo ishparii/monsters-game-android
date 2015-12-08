@@ -9,7 +9,9 @@ import java.util.Observable;
 import java.util.Random;
 
 import com.oreilly.demo.android.pa.uidemo.model.Clock.OnTickListener;
+import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
+import static com.oreilly.demo.android.pa.uidemo.model.Monster.*;
 
 
 /** A list of monsters. */
@@ -30,6 +32,7 @@ public class Monsters implements Observer , OnTickListener{
     public Monster[][] positions;
     public final int MONSTERS_TOTAL=20;
     public static  Random ra=new Random();
+    public MonsterGrid monsterGrid;
 
     /** @param l set the change listener. */
     public void setMonstersChangeListener(MonstersChangeListener l) {
@@ -53,8 +56,13 @@ public class Monsters implements Observer , OnTickListener{
       */
     public Monster addMonster(Monster newMonster) {
         //Monster newMonster=new Monster(x, y, isVulnerable);
-        newMonster.async.execute((Object[]) positions);
-        newMonster.addObserver(this);
+        Object[] params=new Object[2];
+        params[0]=positions;
+        params[1]=newMonster;
+        newMonster.addObserver(monsterGrid);
+        newMonster.async.execute(params);
+
+
         monsters.add(newMonster);
         positions[newMonster.getX()][newMonster.getY()]=newMonster;
 
@@ -62,7 +70,7 @@ public class Monsters implements Observer , OnTickListener{
         return newMonster;
     }
 
-    public boolean removeMonster(Monster monster){
+    public  boolean removeMonster(Monster monster){
          positions[monster.getX()][monster.getY()] = null;
         return monsters.remove(monster);
     }
@@ -84,15 +92,19 @@ public class Monsters implements Observer , OnTickListener{
     }
 
     @Override
-    public void update(Observable o, Object arg){
-        Object[] r=(Object[])arg;
-       Monster newMonster=new Monster((int)r[0],(int)r[1],(int)r[2]==1);
-        positions[((Monster)r[3]).getX()][((Monster)r[3]).getY()]=null;
+    public synchronized void  update(Observable o, Object arg){
+        //Object[] r=(Object[])arg;
+       //Monster newMonster=new Monster((int)r[0],(int)r[1],(int)r[2]==1);
+       // positions[((Monster)r[3]).getX()][((Monster)r[3]).getY()]=null;
 
-        addMonster(newMonster);
-       // removeMonster(new );
-       monsters.remove(r[3]);
+        //addMonster(newMonster);
+        //removeMonster(newMonster );
+      //  monsters.remove(r[3]);
        // positions[(int)r[0]][(int)r[1]]=newMonster;
+       // Object[] params=new Object[2];
+       // params[0]=positions;
+        //params[1]=r[3];
+
 
 
     }
