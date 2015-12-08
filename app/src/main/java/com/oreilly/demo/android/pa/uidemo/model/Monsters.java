@@ -118,7 +118,7 @@ public class Monsters implements Observer {
                 if (positions[x][y] == null){
                     exist = false;
 
-                    Monster newMonster=new Monster(x,y,vulnerableProb);
+                    Monster newMonster = new Monster(x,y,vulnerableProb);
                     newMonster.monsterBatchId=Monsters.currentTaskBatchId;
                     addMonster(newMonster);
                 }
