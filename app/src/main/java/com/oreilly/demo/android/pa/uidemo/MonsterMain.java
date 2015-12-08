@@ -3,24 +3,16 @@ package com.oreilly.demo.android.pa.uidemo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Button;
-import android.graphics.Canvas;
-import android.widget.Toast;
+import android.widget.TextView;
 
-
+import com.oreilly.demo.android.pa.uidemo.model.Monster;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
-import com.oreilly.demo.android.pa.uidemo.model.Monster;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -100,7 +92,7 @@ public class MonsterMain extends Activity {
     TextView pointView;
     Button buttonStart, buttonStop;
     //adjust the format h:m:s
-    private static final String FORMAT = "%02d:%02d:%02d";
+    private static final String FORMAT = "%02d";
 
 
 
@@ -117,24 +109,19 @@ public class MonsterMain extends Activity {
         textViewTimer = (TextView) findViewById(R.id.clockView);
         buttonStart = (Button) findViewById(R.id.start);
         buttonStop = (Button) findViewById(R.id.stop);
-        textViewTimer.setText("00:00:30");
+        textViewTimer.setText("30");
 
 
         final CountDownTimer timer = new CountDownTimer(30000,1000){
 
             public void onTick(long millisUntilFinished){
                 textViewTimer.setText(""+String.format(FORMAT,
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)
-                                - TimeUnit.MINUTES.toSeconds(
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
                 ));
             }
             public void onFinish(){
                 monsterGrid.stopMoving();
-                textViewTimer.setText("00:00:00");
+                textViewTimer.setText("00");
             }
         };
 

@@ -5,25 +5,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 
-import java.util.Observable;
-import java.util.Random;
-import java.util.ArrayList;
-
 import com.oreilly.demo.android.pa.uidemo.R;
-import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
-//<<<<<<< HEAD
 import java.util.Observable;
-import java.util.Random;
-import java.util.ArrayList;
-//=======
-
-import java.util.Random;
-//>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 
 /** A monster: the coordinates and status */
 public final class Monster extends Observable{
@@ -84,8 +71,6 @@ public final class Monster extends Observable{
    // private Observable observable;
     //Random rand=new Random();
 
-
-
     /**
      * @param x horizontal coordinate at top left corner.
      * @param y vertical coordinate at top left corner.
@@ -96,7 +81,6 @@ public final class Monster extends Observable{
         this.y = y;
         this.isVulnerable = isVulnerable;
     }
-
 
     /** @return the horizontal coordinate. */
     public int getX() {
@@ -290,6 +274,12 @@ public final class Monster extends Observable{
         Random rand = new Random();
         x = getX() + (rand.nextInt(3)-1);
         y = getY() + (rand.nextInt(3)-1);
+        int randomVulnerability = rand.nextInt(100);
+        if (randomVulnerability <= 40) {
+            isVulnerable = true;
+        } else {
+            isVulnerable = false;
+        }
         draw(canvas, context, squareWidth, leftMargin, topMargin, paint);
     }*/
 //>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
