@@ -27,6 +27,10 @@ public class MonsterMain extends Activity {
     /** finger target size*/
     public static DisplayMetrics displayMetrics = new DisplayMetrics();
 
+    public static final int[] totalNumberProbArrays = {15, 20, 25, 30, 35};
+    public static final int[] vulnerableProbArrays = {25, 20, 15, 10, 5};
+    private boolean isStopped = true;
+
     /** Listen for taps. */
     private final class TrackingTouchListener implements View.OnTouchListener {
 
@@ -73,7 +77,7 @@ public class MonsterMain extends Activity {
     private final Random rand = new Random();
 
     /** The application model */
-    final Monsters monstersModel = new Monsters(15, 20);
+    final Monsters monstersModel = new Monsters(totalNumberProbArrays[0], vulnerableProbArrays[0]);
 
 
     /** The application view */
@@ -83,22 +87,24 @@ public class MonsterMain extends Activity {
     TextView pointView;
     Button buttonStart, buttonStop;
     private static final String FORMAT = "%02d";
+    private CountDownTimer timer;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
 
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        //install the countdown timer
         setContentView(R.layout.monster_main);
         pointView= (TextView)findViewById(R.id.pointsView);
+
+        this.setTitle(getResources().getText(R.string.app_name) + " - " + getResources().getText(R.string.menuLevel1));
 
         textViewTimer = (TextView) findViewById(R.id.clockView);
         buttonStart = (Button) findViewById(R.id.start);
         buttonStop = (Button) findViewById(R.id.stop);
         textViewTimer.setText("30");
 
-        final CountDownTimer timer = new CountDownTimer(30000,1000){
+        timer = new CountDownTimer(30000,1000){
 
             public void onTick(long millisUntilFinished){
                 textViewTimer.setText(""+String.format(FORMAT,
@@ -114,17 +120,32 @@ public class MonsterMain extends Activity {
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timer.start();
-                monsterGrid.startMoving();
+
+                if(isStopped){
+                    timer.start();
+                    monsterGrid.startMoving();
+                    isStopped = false;
+                    buttonStart.setEnabled(false);
+                    buttonStop.setEnabled(true);
+                }
+
             }
         });
 
         buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                monsterGrid.stopMoving();
-                pointView.setText("0");
-                timer.cancel();
+                if(!isStopped){
+                    monsterGrid.stopMoving();
+                    pointView.setText("0");
+                    timer.cancel();
+                    textViewTimer.setText("30");
+                    isStopped = true;
+                    buttonStop.setEnabled(false);
+                    buttonStart.setEnabled(true);
+                }
+
+
             }
         });
 
@@ -151,40 +172,38 @@ public class MonsterMain extends Activity {
 
     /** Respond to an options menu selection. */
     @Override public boolean onOptionsItemSelected(MenuItem item) {
+        this.setTitle(getResources().getText(R.string.app_name) + " - " + item.getTitle());
+        isStopped = true;
+        buttonStop.setEnabled(false);
+        buttonStart.setEnabled(true);
+        monsterGrid.stopMoving();
+        pointView.setText("0");
+        textViewTimer.setText("30");
+        timer.cancel();
+
         switch (item.getItemId()) {
             case R.id.menuLevel1:
-
+                monstersModel.setTotalNumberOfMonsters(totalNumberProbArrays[0]);
+                monstersModel.setVulnerableProb(vulnerableProbArrays[0]);
                 return true;
             case R.id.menuLevel2:
-
+                monstersModel.setTotalNumberOfMonsters(totalNumberProbArrays[1]);
+                monstersModel.setVulnerableProb(vulnerableProbArrays[1]);
                 return true;
             case R.id.menuLevel3:
-
+                monstersModel.setTotalNumberOfMonsters(totalNumberProbArrays[2]);
+                monstersModel.setVulnerableProb(vulnerableProbArrays[2]);
                 return true;
             case R.id.menuLevel4:
-
+                monstersModel.setTotalNumberOfMonsters(totalNumberProbArrays[3]);
+                monstersModel.setVulnerableProb(vulnerableProbArrays[3]);
                 return true;
             case R.id.menuLevel5:
-
+                monstersModel.setTotalNumberOfMonsters(totalNumberProbArrays[4]);
+                monstersModel.setVulnerableProb(vulnerableProbArrays[4]);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-//    /** Install a context menu. */
-//    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-//        menu.add(Menu.NONE, 1, Menu.NONE, "Restart").setAlphabeticShortcut('r');
-//    }
-//
-//    /** Respond to a context menu selection. */
-//    @Override public boolean onContextItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case 1:
-//
-//
-//            default: ;
-//        }
-//        return false;
-//    }
 }

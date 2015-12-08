@@ -186,6 +186,7 @@ public class MonsterGrid extends View implements Observer{
     public void stopMoving(){
         monsters.stopMoving();
         monsters.clearMonsters();
+        invalidate();
     }
 
     public void startMoving(){
