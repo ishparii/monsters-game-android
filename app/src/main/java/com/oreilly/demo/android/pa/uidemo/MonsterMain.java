@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,7 +15,6 @@ import com.oreilly.demo.android.pa.uidemo.model.Monster;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,6 +27,7 @@ public class MonsterMain extends Activity {
 
     public static final int[] totalNumberProbArrays = {15, 20, 25, 30, 35};
     public static final int[] vulnerableProbArrays = {25, 20, 15, 10, 5};
+
     private boolean isStopped = true;
 
     /** Listen for taps. */
@@ -37,26 +36,24 @@ public class MonsterMain extends Activity {
         private final Monsters mMonsters;
         private final MonsterGrid monsterGrid;
 
-        TrackingTouchListener(Monsters mMonsters,MonsterGrid monsterGrid) {
+        TrackingTouchListener(Monsters mMonsters, MonsterGrid monsterGrid) {
             this.mMonsters = mMonsters;
-            this.monsterGrid=monsterGrid;
+            this.monsterGrid = monsterGrid;
         }
 
         @Override public boolean onTouch(View v, MotionEvent evt) {
-            int n;
-            int idx;
             int action = evt.getAction();
 
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
 
-                   float x=evt.getX() ;
-                    float y=evt.getY();
-                    x=x-monsterGrid.leftMargin;
-                    y=y-monsterGrid.topMargin;
+                    float x = evt.getX();
+                    float y = evt.getY();
+                    x = x - monsterGrid.getLeftMargin();
+                    y = y - monsterGrid.getTopMargin();
 
-                    x=x/monsterGrid.squareWidth;
-                    y=y/monsterGrid.squareWidth;
+                    x = x / monsterGrid.getSquareHeight();
+                    y = y / monsterGrid.getSquareWidth();
 
                     int indexX = (int)x;
                     int indexY = (int)y;
@@ -79,20 +76,18 @@ public class MonsterMain extends Activity {
         }
     }
 
-    private final Random rand = new Random();
-
     /** The application model */
     final Monsters monstersModel = new Monsters(totalNumberProbArrays[0], vulnerableProbArrays[0]);
-
 
     /** The application view */
     MonsterGrid monsterGrid;
 
+    private CountDownTimer timer;
     TextView textViewTimer;
     TextView pointView;
     Button buttonStart, buttonStop;
+
     private static final String FORMAT = "%02d";
-    private CountDownTimer timer;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -112,9 +107,7 @@ public class MonsterMain extends Activity {
         timer = new CountDownTimer(30000,1000){
 
             public void onTick(long millisUntilFinished){
-                textViewTimer.setText(""+String.format(FORMAT,
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)
-                ));
+                textViewTimer.setText(""+String.format(FORMAT, TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)));
             }
             public void onFinish(){
                 monsterGrid.stopMoving();
@@ -125,7 +118,6 @@ public class MonsterMain extends Activity {
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(isStopped){
                     timer.start();
                     monsterGrid.startMoving();
@@ -133,7 +125,6 @@ public class MonsterMain extends Activity {
                     buttonStart.setEnabled(false);
                     buttonStop.setEnabled(true);
                 }
-
             }
         });
 
@@ -149,8 +140,6 @@ public class MonsterMain extends Activity {
                     buttonStop.setEnabled(false);
                     buttonStart.setEnabled(true);
                 }
-
-
             }
         });
 
@@ -164,7 +153,6 @@ public class MonsterMain extends Activity {
         monsterGrid.setOnCreateContextMenuListener(this);
         monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel,monsterGrid));
     }
-
 
     /**
      * Install an options menu.

@@ -1,6 +1,5 @@
 package com.oreilly.demo.android.pa.uidemo.model;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,16 +13,15 @@ import java.util.Observable;
 import java.util.Random;
 
 /** A monster: the coordinates and status */
-public final class Monster extends Observable{
+public final class Monster extends Observable {
     private int x;
     private int y;
     private int vulnerableProb;
     private boolean isVulnerable;
-    public boolean moved=false;
-    public int t=0;
+    public boolean moved = false;
     public int monsterBatchId;
 
-    public static Random ra=new Random();
+    public static Random ra = new Random();
 
     public Async async=new Async();
 
@@ -42,31 +40,26 @@ public final class Monster extends Observable{
         protected Monster doInBackground(Object... params) {
 
             Monster[][] positions = (Monster[][]) params[0];
-            Monster m=(Monster) params[1];
-            m.moved=false;
+            Monster m = (Monster) params[1];
+            m.moved = false;
 
-                try {
+            try {
+                Thread.sleep(80); //move every 0.08 second
 
-                      Thread.sleep(80); //move every 0.08 second
-
-                } catch (InterruptedException e) {
-                }
-
-
-                 m.move(positions);
-
+            } catch (InterruptedException e) {
+            }
+            m.move(positions);
             return m;
         }
 
         @Override
         protected void onPostExecute(Monster m) {
-            if(m.isMoved()) {
+            if (m.isMoved()) {
                 m.setChanged();
                 m.notifyObservers(m);//tell MonsterGrid monster has moved
             }
         }
-
-    };
+    }
 
     /**
      * @param x horizontal coordinate at top left corner.
@@ -79,48 +72,54 @@ public final class Monster extends Observable{
         this.isVulnerable = ra.nextInt(100) < vulnerableProb;
     }
 
-    /** @return the horizontal coordinate. */
+    /**
+     * @return the horizontal coordinate.
+     */
     public int getX() {
         return x;
     }
 
-    /** @return the vertical coordinate. */
+    /**
+     * @return the vertical coordinate.
+     */
     public int getY() {
         return y;
     }
 
-    public boolean isMoved(){
+    public boolean isMoved() {
         return moved;
     }
 
-    /** @return the status. */
+    /**
+     * @return the status.
+     */
     public boolean isVulnerable() {
         return isVulnerable;
     }
 
     //draw monsters
-    public void draw(Canvas canvas, Context context, int squareWidth, int leftMargin, int topMargin, Paint paint ){
+    public void draw(Canvas canvas, Context context, int squareWidth, int leftMargin, int topMargin, Paint paint) {
         Bitmap image;
-        if(isVulnerable()){
+        if (isVulnerable()) {
             image = BitmapFactory.decodeResource(context.getResources(), R.drawable.orange_monster);
-        } else{
+        } else {
             image = BitmapFactory.decodeResource(context.getResources(), R.drawable.green_monster);
         }
-        Bitmap imageScaled = Bitmap.createScaledBitmap(image,squareWidth,squareWidth, false);
-        canvas.drawBitmap(imageScaled, getX()*squareWidth + leftMargin, getY()*squareWidth + topMargin, paint);
+        Bitmap imageScaled = Bitmap.createScaledBitmap(image, squareWidth, squareWidth, false);
+        canvas.drawBitmap(imageScaled, getX() * squareWidth + leftMargin, getY() * squareWidth + topMargin, paint);
 
     }
 
     //define if two monsters equals
-    public boolean equals(Object obj){
-        if(!(obj instanceof Monster))
-           return false;
-        if(obj==this)
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Monster))
+            return false;
+        if (obj == this)
             return true;
-        if (  ((Monster)obj).getX()==getX() && ((Monster)obj).getY()==getY())
-             return true;
+        if (((Monster) obj).getX() == getX() && ((Monster) obj).getY() == getY())
+            return true;
         else
-             return false;
+            return false;
     }
 
     public synchronized Object[] move (Monster[][] positions){ // positions is a matrix
