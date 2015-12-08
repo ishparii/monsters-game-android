@@ -13,14 +13,17 @@
 
 
         <TextView
-            android:layout_width="131dp"
+            android:layout_width="67dp"
             android:layout_height="wrap_content"
             android:id="@+id/clockView"
-            android:textSize="30dp"
+            android:textSize="40dp"
             android:layout_marginRight="5dp"
             android:numeric="integer"
-            android:text="00:00:30"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:text="30"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="0.36"
+            android:paddingLeft="25dp"
+            android:layout_marginTop="6dp" />
 
         <Button
             android:id="@+id/start"
@@ -49,9 +52,11 @@
             android:layout_weight="1"
             android:text="00"
             android:textSize="40dp"
-            android:textAlignment="center"
+            android:textAlignment="right"
             android:numeric="integer"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="6dp" />
     </LinearLayout>
 
     <com.oreilly.demo.android.pa.uidemo.view.MonsterGrid
