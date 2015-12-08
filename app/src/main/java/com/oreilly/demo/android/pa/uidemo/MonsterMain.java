@@ -67,10 +67,10 @@ public class MonsterMain extends Activity {
                      //x=(int)x;
                      //y=(int)y;
                     if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable()){
-                        mMonsters.removeMonster(new Monster((int) x, (int) y, false));
+                        mMonsters.removeMonster(new Monster((int) x, (int) y, monstersModel.getVulnerableProb()));
                         //point++;
                     // System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
-                    //Canvas canvas=new Canvas();
+                    //Canvas canvas=new Canvas();MONSTERS_TOTAL
                        monsterGrid.invalidate();
                        // pointView.setText(mMonsters.killed);
                         pointView.setText(Integer.toString(mMonsters.killed));

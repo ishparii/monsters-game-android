@@ -28,12 +28,16 @@ public class Monsters implements Observer {
     private MonstersChangeListener monstersChangeListener;
     public int column;
     public int row;
+    private int totalNumberOfMonsters;
+    private int vulnerableProb;
+
+
     public Monster[][] positions;
-    public int MONSTERS_TOTAL;
-    public static  Random ra=new Random();
+
+
     public MonsterGrid monsterGrid;
     public int killed=0;
-    public static int VULNERABLE_PROB=20;
+    public static  Random ra=new Random();
 
     /** @param l set the change listener. */
     public void setMonstersChangeListener(MonstersChangeListener l) {
@@ -50,14 +54,30 @@ public class Monsters implements Observer {
         return monsters;
     }
 
+    public int getTotalNumberOfMonsters() {
+        return totalNumberOfMonsters;
+    }
+
+    public void setTotalNumberOfMonsters(int totalNumberOfMonsters) {
+        this.totalNumberOfMonsters = totalNumberOfMonsters;
+    }
+
+    public int getVulnerableProb() {
+        return vulnerableProb;
+    }
+
+    public void setVulnerableProb(int vulnerableProb) {
+        this.vulnerableProb = vulnerableProb;
+    }
+
     /**
-     * @param newMonster.
+     * @param newMonster
       */
     public Monster addMonster(Monster newMonster) {
         //Monster newMonster=new Monster(x, y, isVulnerable);
-        Object[] params=new Object[2];
-        params[0]=positions;
-        params[1]=newMonster;
+//        Object[] params=new Object[2];
+//        params[0]=positions;
+//        params[1]=newMonster;
         newMonster.addObserver(monsterGrid);
         //newMonster.async.execute(params);
 
@@ -163,7 +183,7 @@ public class Monsters implements Observer {
         }*/
     }
 
-    public void initializeMonsters(int total){
+    public void initializeMonsters(){
 
         positions = new Monster[column][row];
         for(int i = 0 ; i < column ; i++)
@@ -171,7 +191,7 @@ public class Monsters implements Observer {
                 positions[i][j] = null;
 
         //Random rand = new Random();
-        for(int i = 0 ; i < total ; i++){
+        for(int i = 0 ; i < totalNumberOfMonsters ; i++){
             boolean exist = true;
             while (exist){
                 int x = ra.nextInt(column);
@@ -179,7 +199,7 @@ public class Monsters implements Observer {
                 if (positions[x][y]==null){
                     exist = false;
 
-                    Monster newMonster=new Monster(x,y,ra.nextInt(100)<VULNERABLE_PROB);
+                    Monster newMonster=new Monster(x,y,vulnerableProb);
                     addMonster(newMonster);
                     //monsters.getLastMonster().draw(canvas,  getContext(), squareWidth, leftMargin, topMargin, paint);
                 }

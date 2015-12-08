@@ -29,10 +29,21 @@ import java.util.Random;
 public final class Monster extends Observable{
     private int x;
     private int y;
+    private int vulnerableProb;
     private boolean isVulnerable;
     public boolean moved=false;
     public int t=0;
     //public MonsterGrid monsterGrid;
+
+    public static  Random ra=new Random();
+
+    public int getVulnerableProb() {
+        return vulnerableProb;
+    }
+
+    public void setVulnerableProb(int vulnerableProb) {
+        this.vulnerableProb = vulnerableProb;
+    }
 
     public Async async=new Async();
 
@@ -89,12 +100,12 @@ public final class Monster extends Observable{
     /**
      * @param x horizontal coordinate at top left corner.
      * @param y vertical coordinate at top left corner.
-     * @param isVulnerable status of monster.
      */
-    public Monster(int x, int y, boolean isVulnerable) {
+    public Monster(int x, int y, int vulnerableProb) {
         this.x = x;
         this.y = y;
-        this.isVulnerable = isVulnerable;
+        this.vulnerableProb = vulnerableProb;
+        this.isVulnerable = ra.nextInt(100) < vulnerableProb;
     }
 
 
@@ -158,7 +169,7 @@ public final class Monster extends Observable{
 
        }*/
            int count=7;
-           int direction = Monsters.ra.nextInt(8);
+           int direction = ra.nextInt(8);
 
           while(true){
 
@@ -253,7 +264,7 @@ public final class Monster extends Observable{
        //result[1]=1;
        positions[x][y]=null;//what does this mean? There is no monster at (x,y)
        //positions[(int)result[0]][(int)result[1]]=this;
-       result[2]=Monsters.ra.nextInt(100)<Monsters.VULNERABLE_PROB; //some probability to change to vulnerable
+       result[2]=ra.nextInt(100)<vulnerableProb; //some probability to change to vulnerable
        result[3]=this;
 
 

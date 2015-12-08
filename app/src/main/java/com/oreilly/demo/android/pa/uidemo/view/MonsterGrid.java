@@ -146,7 +146,8 @@ public class MonsterGrid extends View implements Observer{
 
         monsters.column=column;
         monsters.row=row;
-        monsters.MONSTERS_TOTAL=(int)(row*column*0.15);
+        monsters.setTotalNumberOfMonsters((int)(row*column*0.15));
+        monsters.setVulnerableProb(20);
         //monsters.initializeMonsters(monsters.MONSTERS_TOTAL);
         //monsters.positions=positions;
     }
@@ -198,7 +199,7 @@ public class MonsterGrid extends View implements Observer{
     }
 
     public void startMoving(){
-        monsters.initializeMonsters(monsters.MONSTERS_TOTAL);
+        monsters.initializeMonsters();
         monsters.startMoving();
     }
 
