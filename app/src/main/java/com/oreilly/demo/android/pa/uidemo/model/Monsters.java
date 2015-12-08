@@ -67,11 +67,6 @@ public class Monsters implements Observer {
 
     public void stopMoving(){
         currentTaskBatchId=(currentTaskBatchId+1)%2;
-
-//        for(Monster monster:monsters){
-//            monster.async.cancel(false);
-//            monster.async = null;
-//        }
     }
 
     public void startMoving(){
