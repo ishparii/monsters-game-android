@@ -107,9 +107,8 @@ public class Monsters implements Observer {
     
     @Override
     public synchronized void  update(Observable o, Object arg){ }
-    public synchronized void  update(Observable o, Object arg){}
 
-    public void initializeMonsters(){
+    public void initializeMonsters(int column, int row){
 
         positions = new Monster[column][row];
         for(int i = 0 ; i < column ; i++)
