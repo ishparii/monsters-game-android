@@ -17,18 +17,16 @@ public class Monsters implements Observer {
     }
 
     private final LinkedList<Monster> monsters = new LinkedList<>();
+    public MonsterGrid monsterGrid;
 
     private MonstersChangeListener monstersChangeListener;
     private int totalNumberOfMonsters;
     private int vulnerableProb;
 
-
     public Monster[][] positions;
 
     public static int currentTaskBatchId=0;
 
-
-    public MonsterGrid monsterGrid;
     public int killed = 0;
     public static  Random ra = new Random();
 
@@ -66,11 +64,10 @@ public class Monsters implements Observer {
     }
 
     public void stopMoving(){
-        currentTaskBatchId=(currentTaskBatchId+1)%2;
+        currentTaskBatchId = (currentTaskBatchId+1)%2;
     }
 
     public void startMoving(){
-
         for(Monster monster : monsters){
             Object[] params=new Object[2];
             params[0] = positions;
@@ -101,7 +98,7 @@ public class Monsters implements Observer {
     }
     
     @Override
-    public synchronized void  update(Observable o, Object arg){ }
+    public synchronized void update(Observable o, Object arg){ }
 
     public void initializeMonsters(int column, int row){
 

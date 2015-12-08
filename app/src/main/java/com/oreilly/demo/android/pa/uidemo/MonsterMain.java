@@ -22,60 +22,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class MonsterMain extends Activity {
 
-    /** finger target size*/
-    public static DisplayMetrics displayMetrics = new DisplayMetrics();
-
-    public static final int[] totalNumberProbArrays = {15, 20, 25, 30, 35};
-    public static final int[] vulnerableProbArrays = {25, 20, 15, 10, 5};
-
-    private boolean isStopped = true;
-
-    /** Listen for taps. */
-    private final class TrackingTouchListener implements View.OnTouchListener {
-
-        private final Monsters mMonsters;
-        private final MonsterGrid monsterGrid;
-
-        TrackingTouchListener(Monsters mMonsters, MonsterGrid monsterGrid) {
-            this.mMonsters = mMonsters;
-            this.monsterGrid = monsterGrid;
-        }
-
-        @Override public boolean onTouch(View v, MotionEvent evt) {
-            int action = evt.getAction();
-
-            switch (action & MotionEvent.ACTION_MASK) {
-                case MotionEvent.ACTION_DOWN:
-
-                    float x = evt.getX();
-                    float y = evt.getY();
-                    x = x - monsterGrid.getLeftMargin();
-                    y = y - monsterGrid.getTopMargin();
-
-                    x = x / monsterGrid.getSquareHeight();
-                    y = y / monsterGrid.getSquareWidth();
-
-                    int indexX = (int)x;
-                    int indexY = (int)y;
-
-                    if(indexX >= 0 && indexX < monsterGrid.getRow() && indexY > 0 && indexY < monsterGrid.getColumn()
-                            && mMonsters.positions[indexX][indexY]!=null && mMonsters.positions[indexX][indexY].isVulnerable()){
-
-                        mMonsters.removeMonster(new Monster(indexX, indexY, monstersModel.getVulnerableProb()));
-                        //point++;
-                    // System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
-                    //Canvas canvas=new Canvas();MONSTERS_TOTAL
-                       monsterGrid.invalidate();
-                        pointView.setText(Integer.toString(mMonsters.killed));
-                    }
-                    break;
-                default:
-                    return false;
-            }
-            return true;
-        }
-    }
-
     /** The application model */
     final Monsters monstersModel = new Monsters(totalNumberProbArrays[0], vulnerableProbArrays[0]);
 
@@ -87,6 +33,13 @@ public class MonsterMain extends Activity {
     TextView pointView;
     Button buttonStart, buttonStop;
 
+    public static DisplayMetrics displayMetrics = new DisplayMetrics();
+
+    public static final int[] totalNumberProbArrays = {15, 20, 25, 30, 35};
+    public static final int[] vulnerableProbArrays = {25, 20, 15, 10, 5};
+
+    private boolean isStopped = true;
+
     private static final String FORMAT = "%02d";
 
     @Override public void onCreate(Bundle state) {
@@ -95,7 +48,7 @@ public class MonsterMain extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         setContentView(R.layout.monster_main);
-        pointView= (TextView)findViewById(R.id.pointsView);
+        pointView = (TextView)findViewById(R.id.pointsView);
 
         this.setTitle(getResources().getText(R.string.app_name) + " - " + getResources().getText(R.string.menuLevel1));
 
@@ -104,8 +57,15 @@ public class MonsterMain extends Activity {
         buttonStop = (Button) findViewById(R.id.stop);
         textViewTimer.setText("30");
 
-        timer = new CountDownTimer(30000,1000){
+        monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
 
+        monstersModel.monsterGrid = monsterGrid;
+
+        monsterGrid.setMonsters(monstersModel);
+        monsterGrid.setOnCreateContextMenuListener(this);
+        monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel, monsterGrid));
+
+        timer = new CountDownTimer(30000, 1000){
             public void onTick(long millisUntilFinished){
                 textViewTimer.setText(""+String.format(FORMAT, TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)));
             }
@@ -115,14 +75,13 @@ public class MonsterMain extends Activity {
                 isStopped = true;
                 buttonStop.setEnabled(false);
                 buttonStart.setEnabled(true);
-
             }
         };
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isStopped){
+                if (isStopped) {
                     timer.start();
                     monsterGrid.startMoving();
                     pointView.setText("0");
@@ -136,7 +95,7 @@ public class MonsterMain extends Activity {
         buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isStopped){
+                if (!isStopped) {
                     monsterGrid.stopMoving();
                     pointView.setText("0");
                     timer.cancel();
@@ -147,16 +106,6 @@ public class MonsterMain extends Activity {
                 }
             }
         });
-
-        // find the monster view
-        monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
-
-        monstersModel.monsterGrid=this.monsterGrid;
-
-        monsterGrid.setMonsters(monstersModel);
-
-        monsterGrid.setOnCreateContextMenuListener(this);
-        monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel,monsterGrid));
     }
 
     /**
@@ -202,6 +151,48 @@ public class MonsterMain extends Activity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /** Listen for taps. */
+    private final class TrackingTouchListener implements View.OnTouchListener {
+
+        private final Monsters mMonsters;
+        private final MonsterGrid monsterGrid;
+
+        TrackingTouchListener(Monsters mMonsters, MonsterGrid monsterGrid) {
+            this.mMonsters = mMonsters;
+            this.monsterGrid = monsterGrid;
+        }
+
+        @Override public boolean onTouch(View v, MotionEvent evt) {
+            int action = evt.getAction();
+
+            switch (action & MotionEvent.ACTION_MASK) {
+
+                case MotionEvent.ACTION_DOWN:
+                    float x = evt.getX();
+                    float y = evt.getY();
+                    x = x - monsterGrid.getLeftMargin();
+                    y = y - monsterGrid.getTopMargin();
+
+                    x = x / monsterGrid.getSquareHeight();
+                    y = y / monsterGrid.getSquareWidth();
+
+                    int indexX = (int)x;
+                    int indexY = (int)y;
+
+                    if(indexX >= 0 && indexX < monsterGrid.getRow() && indexY > 0 && indexY < monsterGrid.getColumn()
+                            && mMonsters.positions[indexX][indexY]!=null && mMonsters.positions[indexX][indexY].isVulnerable()){
+                        mMonsters.removeMonster(new Monster(indexX, indexY, monstersModel.getVulnerableProb()));
+                        monsterGrid.invalidate();
+                        pointView.setText(Integer.toString(mMonsters.killed));
+                    }
+                    break;
+                default:
+                    return false;
+            }
+            return true;
         }
     }
 }
