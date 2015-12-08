@@ -61,24 +61,21 @@ public class MonsterMain extends Activity {
 
                     x=x/monsterGrid.squareWidth;
                     y=y/monsterGrid.squareHeight;
-                    System.out.println("Touch!"+(int)x);
-                    System.out.println("Touch!"+(int)y);
+                    //System.out.println("Touch!"+(int)x);
+                    //System.out.println("Touch!"+(int)y);
 
 
                      //x=(int)x;
                      //y=(int)y;
-                    if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable())
-                     System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
-                    //Toast toastMessage = Toast.makeText(getApplicationContext(), "Ouch!", Toast.LENGTH_SHORT);
-                    //toastMessage.show();
+                    if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable()){
+                        mMonsters.removeMonster(new Monster((int) x, (int) y, false));
+                    // System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
                     //Canvas canvas=new Canvas();
-                   // monsterGrid.dra(canvas);
+                    monsterGrid.invalidate();}
                     //monsterGrid.update();
 
 
                     break;
-
-
 
 
                 case MotionEvent.ACTION_POINTER_DOWN:

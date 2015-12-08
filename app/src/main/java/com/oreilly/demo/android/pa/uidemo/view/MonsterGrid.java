@@ -91,7 +91,37 @@ public class MonsterGrid extends View implements Observer{
      * @see android.view.View#onDraw(android.graphics.Canvas)
      */
     @Override protected void onDraw(Canvas canvas) {
-      dra(canvas);
+      //dra(canvas);
+        if(!ifInit){
+            initializeMeasures();
+            //initializeMonsters();
+            ifInit=true;
+        }
+
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.BLACK);
+
+        canvas.drawRect(leftMargin, topMargin, displayWidth - rightMargin, displayHeight
+                - bottomMargin, paint);
+
+        for(int i = 0 ; i < row - 1 ; i ++){
+            canvas.drawLine(leftMargin, topMargin + (i+1) * squareWidth, displayWidth - rightMargin,
+                    topMargin + (i+1) * squareWidth , paint);
+        }
+
+        for(int i = 0 ; i < column - 1 ; i ++){
+            canvas.drawLine(leftMargin + (i+1) * squareWidth, topMargin , leftMargin + (i+1)
+                    * squareWidth, displayHeight - bottomMargin, paint);
+        }
+
+        //updateMonsters();
+        drawMonsters(canvas, paint);
+       /* try {
+            Thread.sleep(30);
+        } catch (InterruptedException e) {
+        }
+        invalidate();*/
 
     }
 
@@ -118,7 +148,8 @@ public class MonsterGrid extends View implements Observer{
 
         monsters.column=column;
         monsters.row=row;
-        monsters.initializeMonsters();
+        monsters.MONSTERS_TOTAL=(int)(row*column*0.1);
+        monsters.initializeMonsters(monsters.MONSTERS_TOTAL);
        // monsters.positions=positions;
     }
 
@@ -140,7 +171,7 @@ public class MonsterGrid extends View implements Observer{
 
 
     @Override
-    public void update(Observable o, Object arg){
+    public void update(Observable o, Object arg){  //observer pattern
        // Canvas canvas=new Canvas();
         //onDraw(canvas);
        // this.onDraw(canvas);
@@ -152,43 +183,17 @@ public class MonsterGrid extends View implements Observer{
         m.async=new Monster.Async();
         m.async.execute(params);
 
+        // if(monsters.getMonsters().size()<(int)(monsters.MONSTERS_TOTAL*0.8))
+        //   monsters.initializeMonsters(1);
+
+        invalidate();
+
        // Canvas canvas=new Canvas();
         //dra(canvas);
+
     }
 
 
-    public void dra(Canvas canvas){
-        //super.draw(canvas);
-        if(!ifInit){
-            initializeMeasures();
-            //initializeMonsters();
-            ifInit=true;
-        }
 
-
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
-
-        canvas.drawRect(leftMargin, topMargin, displayWidth - rightMargin, displayHeight
-                - bottomMargin, paint);
-
-        for(int i = 0 ; i < row - 1 ; i ++){
-            canvas.drawLine(leftMargin, topMargin + (i+1) * squareWidth, displayWidth - rightMargin,
-                    topMargin + (i+1) * squareWidth , paint);
-        }
-
-        for(int i = 0 ; i < column - 1 ; i ++){
-            canvas.drawLine(leftMargin + (i+1) * squareWidth, topMargin , leftMargin + (i+1)
-                    * squareWidth, displayHeight - bottomMargin, paint);
-        }
-
-        //updateMonsters();
-        drawMonsters(canvas, paint);
-        try {
-            Thread.sleep(30);
-        } catch (InterruptedException e) {
-        }
-        invalidate();
-    }
 
 }

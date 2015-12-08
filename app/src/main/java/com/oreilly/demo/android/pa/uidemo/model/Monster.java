@@ -38,7 +38,7 @@ public final class Monster extends Observable{
     public static class Async extends AsyncTask<Object,Void,Monster> {
         @Override
         protected Monster doInBackground(Object... params) {
-            System.out.println("Do in background");
+           // System.out.println("Do in background");
 
             Monster[][] positions = (Monster[][]) params[0];
             Monster m=(Monster) params[1];
@@ -47,7 +47,7 @@ public final class Monster extends Observable{
             //params[0]=(Void)new Object();
             //while(!m.isMoved()) {
                 try {
-                    Thread.sleep(80);
+                    Thread.sleep(80); //move every 0.08 second
                 } catch (InterruptedException e) {
                 }
 
@@ -66,10 +66,10 @@ public final class Monster extends Observable{
             // showDialog("Downloaded " + result + " bytes");
             //s("Downloaded " + result + " bytes");
             //return;
-
-            m.setChanged();
-            //notifyObservers(result);
-            m.notifyObservers(m);
+            if(m.isMoved()) {
+                m.setChanged();
+                m.notifyObservers(m);//tell MonsterGrid monster has moved
+            }
         }
 
     };
@@ -109,11 +109,7 @@ public final class Monster extends Observable{
         return isVulnerable;
     }
 
-    //@Override
-    protected Object doInBackground(Object[] params) {
-        return null;
-    }
-
+    //draw monsters
     public void draw(Canvas canvas, Context context, int squareWidth, int leftMargin, int topMargin, Paint paint ){
         Bitmap image;
         if(isVulnerable()){
@@ -127,6 +123,7 @@ public final class Monster extends Observable{
     }
 
 //<<<<<<< HEAD
+    //define if two monsters equals
     public boolean equals(Object obj){
         if(!(obj instanceof Monster))
            return false;
@@ -159,67 +156,59 @@ public final class Monster extends Observable{
 
               switch (direction) {
                   case 0:
-                      if (positions[(x-1+lx)%lx][y] == null || this.isVulnerable()==false ) {
-                          result[0] = (x-1+lx)%lx;
+                      if (positions[(x-1+lx)%lx][y] == null) { //the box above the monster
+                          result[0] = (x-1+lx)%lx; //%lx, %ly to limit boundary
                           result[1] = y;
                            moved=true;
-                          isVulnerable=true;
                       }
                       break;
                   case 1:
-                      if (positions[(x-1+lx)%lx][(y+1)%ly] == null || this.isVulnerable()==false) {
+                      if (positions[(x-1+lx)%lx][(y+1)%ly] == null) {// top right
                           result[0] = (x-1+lx)%lx;
                           result[1] = (y+1)%ly;
                           moved=true;
-                         isVulnerable=true;
                       }
                       break;
                   case 2:
-                      if (positions[x][(y+1)%ly] == null || this.isVulnerable()==false) {
+                      if (positions[x][(y+1)%ly] == null) { //right
                           result[0] = x;
                           result[1] = (y+1)%ly;
                           moved=true;
-                         isVulnerable=true;
                       }
                       break;
                   case 3:
-                      if (positions[(x+1)%lx][(y+1)%ly] == null || this.isVulnerable()==false) {
+                      if (positions[(x+1)%lx][(y+1)%ly] == null) { //bottom right
                           result[0] = (x+1)%lx;
                           result[1] = (y+1)%ly;
                           moved=true;
-                         isVulnerable=true;
                       }
                       break;
                   case 4:
-                      if (positions[(x+1)%lx][y] == null || this.isVulnerable()==false) {
+                      if (positions[(x+1)%lx][y] == null) { //bottom
                           result[0] =(x+1)%lx;
                           result[1] = y;
                           moved=true;
-                          isVulnerable=true;
                       }
                       break;
                   case 5:
-                      if (positions[(x+1)%lx][(y-1+ly)%ly] == null || this.isVulnerable()==false) {
+                      if (positions[(x+1)%lx][(y-1+ly)%ly] == null) { //bottom left
                           result[0] = (x+1)%lx;
                           result[1] = (y-1+ly)%ly;
                           moved=true;
-                          isVulnerable=true;
                       }
                       break;
                   case 6:
-                      if (positions[x][(y-1+ly)%ly] == null || this.isVulnerable()==false) {
+                      if (positions[x][(y-1+ly)%ly] == null) { //left
                           result[0] = x;
                           result[1] = (y-1+ly)%ly;
                           moved=true;
-                          isVulnerable=true;
                       }
                       break;
                   case 7:
-                      if (positions[(x-1+lx)%lx][(y-1+ly)%ly] == null || this.isVulnerable()==false) {
+                      if (positions[(x-1+lx)%lx][(y-1+ly)%ly] == null) { //top left
                           result[0] = (x-1+lx)%lx;
                           result[1] = (y-1+ly)%ly;
                           moved=true;
-                          isVulnerable=true;
                       }
                       break;
                   default:
@@ -242,11 +231,11 @@ public final class Monster extends Observable{
            //moved=true;
        }
 
-       System.out.println("Move");
+      /* System.out.println("Move");
        System.out.println("");
        System.out.println("");
        System.out.println("");
-       System.out.println("");
+       System.out.println("");*/
 
 
 
@@ -254,22 +243,24 @@ public final class Monster extends Observable{
        //result[1]=Math.max(y- 1, 0);
        //result[0]=1;
        //result[1]=1;
-       positions[x][y]=null;//what does this mean?
+       positions[x][y]=null;//what does this mean? There is no monster at (x,y)
        //positions[(int)result[0]][(int)result[1]]=this;
-       result[2]=this.isVulnerable()?1:0;
+       result[2]=Monsters.ra.nextInt(100)<30; //30 percent probability to change to vulnerable
        result[3]=this;
 
 
 
-       x=(int)(result[0]);
-       y=(int)(result[1]);
+
+       x=(int)(result[0]); //change the monster's x coordinate
+       y=(int)(result[1]); //change the monster's y coordinate
+       isVulnerable=(boolean)result[2]; //30 percent probability to change to vulnerable like above
        positions[x][y]=this;
 
        //positions[x][y]=null;
       // if(moved){
 
-         setChanged();
-         notifyObservers(this);
+        // setChanged();
+         //notifyObservers(this);
       // }
 
        return  result;
