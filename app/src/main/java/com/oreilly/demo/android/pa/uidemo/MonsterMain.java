@@ -41,6 +41,7 @@ public class MonsterMain extends Activity {
         private final MonsterGrid monsterGrid;
         private List<Integer> tracks = new ArrayList<Integer>();
 
+
         TrackingTouchListener(Monsters mMonsters,MonsterGrid monsterGrid) {
             this.mMonsters = mMonsters;
             this.monsterGrid=monsterGrid;
@@ -50,6 +51,8 @@ public class MonsterMain extends Activity {
             int n;
             int idx;
             int action = evt.getAction();
+            int point=0;
+            pointView = (TextView)findViewById(R.id.pointsView);
 
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
@@ -69,10 +72,13 @@ public class MonsterMain extends Activity {
                      //y=(int)y;
                     if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable()){
                         mMonsters.removeMonster(new Monster((int) x, (int) y, false));
+                        point++;
                     // System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
                     //Canvas canvas=new Canvas();
                     monsterGrid.invalidate();}
                     //monsterGrid.update();
+                    pointView.setText(Integer.toString(point));
+
 
 
                     break;
@@ -174,7 +180,7 @@ public class MonsterMain extends Activity {
     /** The application view */
     MonsterGrid monsterGrid;
 
-    TextView textViewTimer;
+    TextView textViewTimer, pointView;
     Button buttonStart, buttonStop;
     //adjust the format h:m:s
     private static final String FORMAT = "%02d:%02d:%02d";
