@@ -29,7 +29,7 @@ public class MonsterMain extends Activity {
     MonsterGrid monsterGrid;
 
     private CountDownTimer timer;
-    TextView textViewTimer;
+    TextView clockView;
     TextView pointView;
     Button buttonStart, buttonStop;
 
@@ -52,10 +52,10 @@ public class MonsterMain extends Activity {
 
         this.setTitle(getResources().getText(R.string.app_name) + " - " + getResources().getText(R.string.menuLevel1));
 
-        textViewTimer = (TextView) findViewById(R.id.clockView);
+        clockView = (TextView) findViewById(R.id.clockView);
         buttonStart = (Button) findViewById(R.id.start);
         buttonStop = (Button) findViewById(R.id.stop);
-        textViewTimer.setText("30");
+        clockView.setText("30");
 
         monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
 
@@ -67,11 +67,11 @@ public class MonsterMain extends Activity {
 
         timer = new CountDownTimer(30000, 1000){
             public void onTick(long millisUntilFinished){
-                textViewTimer.setText(""+String.format(FORMAT, TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)));
+                clockView.setText(""+String.format(FORMAT, TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)));
             }
             public void onFinish(){
                 monsterGrid.stopMoving();
-                textViewTimer.setText("00");
+                clockView.setText("00");
                 isStopped = true;
                 buttonStop.setEnabled(false);
                 buttonStart.setEnabled(true);
@@ -99,7 +99,7 @@ public class MonsterMain extends Activity {
                     monsterGrid.stopMoving();
                     pointView.setText("0");
                     timer.cancel();
-                    textViewTimer.setText("30");
+                    clockView.setText("30");
                     isStopped = true;
                     buttonStop.setEnabled(false);
                     buttonStart.setEnabled(true);
@@ -125,7 +125,7 @@ public class MonsterMain extends Activity {
         buttonStart.setEnabled(true);
         monsterGrid.stopMoving();
         pointView.setText("0");
-        textViewTimer.setText("30");
+        clockView.setText("30");
         timer.cancel();
 
         switch (item.getItemId()) {
