@@ -159,59 +159,67 @@ public final class Monster extends Observable{
 
               switch (direction) {
                   case 0:
-                      if (positions[(x-1+lx)%lx][y] == null) {
+                      if (positions[(x-1+lx)%lx][y] == null || this.isVulnerable()==false ) {
                           result[0] = (x-1+lx)%lx;
                           result[1] = y;
                            moved=true;
+                          isVulnerable=true;
                       }
                       break;
                   case 1:
-                      if (positions[(x-1+lx)%lx][(y+1)%ly] == null) {
+                      if (positions[(x-1+lx)%lx][(y+1)%ly] == null || this.isVulnerable()==false) {
                           result[0] = (x-1+lx)%lx;
                           result[1] = (y+1)%ly;
                           moved=true;
+                         isVulnerable=true;
                       }
                       break;
                   case 2:
-                      if (positions[x][(y+1)%ly] == null) {
+                      if (positions[x][(y+1)%ly] == null || this.isVulnerable()==false) {
                           result[0] = x;
                           result[1] = (y+1)%ly;
                           moved=true;
+                         isVulnerable=true;
                       }
                       break;
                   case 3:
-                      if (positions[(x+1)%lx][(y+1)%ly] == null) {
+                      if (positions[(x+1)%lx][(y+1)%ly] == null || this.isVulnerable()==false) {
                           result[0] = (x+1)%lx;
                           result[1] = (y+1)%ly;
                           moved=true;
+                         isVulnerable=true;
                       }
                       break;
                   case 4:
-                      if (positions[(x+1)%lx][y] == null) {
+                      if (positions[(x+1)%lx][y] == null || this.isVulnerable()==false) {
                           result[0] =(x+1)%lx;
                           result[1] = y;
                           moved=true;
+                          isVulnerable=true;
                       }
                       break;
                   case 5:
-                      if (positions[(x+1)%lx][(y-1+ly)%ly] == null) {
+                      if (positions[(x+1)%lx][(y-1+ly)%ly] == null || this.isVulnerable()==false) {
                           result[0] = (x+1)%lx;
                           result[1] = (y-1+ly)%ly;
                           moved=true;
+                          isVulnerable=true;
                       }
                       break;
                   case 6:
-                      if (positions[x][(y-1+ly)%ly] == null) {
+                      if (positions[x][(y-1+ly)%ly] == null || this.isVulnerable()==false) {
                           result[0] = x;
                           result[1] = (y-1+ly)%ly;
                           moved=true;
+                          isVulnerable=true;
                       }
                       break;
                   case 7:
-                      if (positions[(x-1+lx)%lx][(y-1+ly)%ly] == null) {
+                      if (positions[(x-1+lx)%lx][(y-1+ly)%ly] == null || this.isVulnerable()==false) {
                           result[0] = (x-1+lx)%lx;
                           result[1] = (y-1+ly)%ly;
                           moved=true;
+                          isVulnerable=true;
                       }
                       break;
                   default:
@@ -246,7 +254,7 @@ public final class Monster extends Observable{
        //result[1]=Math.max(y- 1, 0);
        //result[0]=1;
        //result[1]=1;
-       positions[x][y]=null;
+       positions[x][y]=null;//what does this mean?
        //positions[(int)result[0]][(int)result[1]]=this;
        result[2]=this.isVulnerable()?1:0;
        result[3]=this;

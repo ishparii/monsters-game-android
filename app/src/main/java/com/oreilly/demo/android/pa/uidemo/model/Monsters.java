@@ -14,8 +14,7 @@ import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
 
 /** A list of monsters. */
-public class Monsters implements Observer //, OnTickListener
-{
+public class Monsters implements Observer {
     /** MonsterChangeListener. */
     public interface MonstersChangeListener {
         /** @param monsters the monsters that changed. */

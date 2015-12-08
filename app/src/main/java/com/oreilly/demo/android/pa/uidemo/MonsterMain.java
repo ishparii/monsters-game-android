@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
 import android.graphics.Canvas;
+import android.widget.Toast;
 
 
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
@@ -34,7 +35,7 @@ public class MonsterMain extends Activity {
 
 
     /** Listen for taps. */
-    private static final class TrackingTouchListener implements View.OnTouchListener {
+    private final class TrackingTouchListener implements View.OnTouchListener {
 
         private final Monsters mMonsters;
         private final MonsterGrid monsterGrid;
@@ -68,6 +69,8 @@ public class MonsterMain extends Activity {
                      //y=(int)y;
                     if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable())
                      System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
+                    //Toast toastMessage = Toast.makeText(getApplicationContext(), "Ouch!", Toast.LENGTH_SHORT);
+                    //toastMessage.show();
                     //Canvas canvas=new Canvas();
                    // monsterGrid.dra(canvas);
                     //monsterGrid.update();
