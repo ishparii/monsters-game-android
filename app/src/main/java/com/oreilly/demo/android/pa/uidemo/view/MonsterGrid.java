@@ -127,6 +127,8 @@ public class MonsterGrid extends View implements Observer{
 
     public void initializeMeasures(){
 
+
+
         displayHeight = getHeight() - 10;
         displayWidth = getWidth() - 10;
 
@@ -148,7 +150,7 @@ public class MonsterGrid extends View implements Observer{
 
         monsters.column=column;
         monsters.row=row;
-        monsters.MONSTERS_TOTAL=(int)(row*column*0.1);
+        monsters.MONSTERS_TOTAL=(int)(row*column*0.15);
         monsters.initializeMonsters(monsters.MONSTERS_TOTAL);
        // monsters.positions=positions;
     }

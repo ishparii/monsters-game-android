@@ -31,6 +31,7 @@ public final class Monster extends Observable{
     private int y;
     private boolean isVulnerable;
     public boolean moved=false;
+    public int t=0;
     //public MonsterGrid monsterGrid;
 
     public Async async=new Async();
@@ -47,13 +48,20 @@ public final class Monster extends Observable{
             //params[0]=(Void)new Object();
             //while(!m.isMoved()) {
                 try {
-                    Thread.sleep(80); //move every 0.08 second
+
+                      Thread.sleep(80); //move every 0.08 second
+
                 } catch (InterruptedException e) {
                 }
 
 
                 // while(true){
-               m.move(positions);
+               //if(m.isVulnerable() ||(!m.isVulnerable() && m.t<=2))
+                 m.move(positions);
+               //m.isVulnerable=Monsters.ra.nextInt(100)<Monsters.VULNERABLE_PROB;
+
+
+               //m.t=(m.t+1)%2;
            // }
 
            // }
@@ -245,7 +253,7 @@ public final class Monster extends Observable{
        //result[1]=1;
        positions[x][y]=null;//what does this mean? There is no monster at (x,y)
        //positions[(int)result[0]][(int)result[1]]=this;
-       result[2]=Monsters.ra.nextInt(100)<30; //30 percent probability to change to vulnerable
+       result[2]=Monsters.ra.nextInt(100)<Monsters.VULNERABLE_PROB; //some probability to change to vulnerable
        result[3]=this;
 
 

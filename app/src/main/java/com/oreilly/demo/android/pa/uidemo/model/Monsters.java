@@ -32,6 +32,8 @@ public class Monsters implements Observer {
     public int MONSTERS_TOTAL;
     public static  Random ra=new Random();
     public MonsterGrid monsterGrid;
+    public int killed=0;
+    public static int VULNERABLE_PROB=20;
 
     /** @param l set the change listener. */
     public void setMonstersChangeListener(MonstersChangeListener l) {
@@ -71,6 +73,7 @@ public class Monsters implements Observer {
 
     public  boolean removeMonster(Monster monster){
          positions[monster.getX()][monster.getY()] = null;
+        killed++;
         return monsters.remove(monster);
     }
 
@@ -171,7 +174,7 @@ public class Monsters implements Observer {
                 if (positions[x][y]==null){
                     exist = false;
 
-                    Monster newMonster=new Monster(x,y,ra.nextInt(100)<30);
+                    Monster newMonster=new Monster(x,y,ra.nextInt(100)<VULNERABLE_PROB);
                     addMonster(newMonster);
                     //monsters.getLastMonster().draw(canvas,  getContext(), squareWidth, leftMargin, topMargin, paint);
                 }

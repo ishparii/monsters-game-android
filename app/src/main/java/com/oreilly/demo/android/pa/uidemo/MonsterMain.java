@@ -51,8 +51,8 @@ public class MonsterMain extends Activity {
             int n;
             int idx;
             int action = evt.getAction();
-            int point=0;
-            pointView = (TextView)findViewById(R.id.pointsView);
+            //int point=0;
+
 
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
@@ -72,12 +72,15 @@ public class MonsterMain extends Activity {
                      //y=(int)y;
                     if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable()){
                         mMonsters.removeMonster(new Monster((int) x, (int) y, false));
-                        point++;
+                        //point++;
                     // System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
                     //Canvas canvas=new Canvas();
-                    monsterGrid.invalidate();}
+                       monsterGrid.invalidate();
+                       // pointView.setText(mMonsters.killed);
+                        pointView.setText(Integer.toString(mMonsters.killed));
+                    }
                     //monsterGrid.update();
-                    pointView.setText(Integer.toString(point));
+
 
 
 
@@ -180,7 +183,8 @@ public class MonsterMain extends Activity {
     /** The application view */
     MonsterGrid monsterGrid;
 
-    TextView textViewTimer, pointView;
+    TextView textViewTimer;
+    TextView pointView;
     Button buttonStart, buttonStop;
     //adjust the format h:m:s
     private static final String FORMAT = "%02d:%02d:%02d";
@@ -190,6 +194,7 @@ public class MonsterMain extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+
         //        Clock clock=new Clock();
 //        clock.setOnTickListener(monstersModel);
 //        clock.start();
@@ -200,6 +205,7 @@ public class MonsterMain extends Activity {
 
         //install the countdown timer
         setContentView(R.layout.monster_main);
+        pointView= (TextView)findViewById(R.id.pointsView);
 
         textViewTimer = (TextView) findViewById(R.id.clockView);
         buttonStart = (Button) findViewById(R.id.start);
