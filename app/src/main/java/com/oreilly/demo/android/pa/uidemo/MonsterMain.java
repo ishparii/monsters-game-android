@@ -39,7 +39,7 @@ public class MonsterMain extends Activity {
 
         TrackingTouchListener(Monsters mMonsters,MonsterGrid monsterGrid) {
             this.mMonsters = mMonsters;
-            this.monsterGrid=monsterGrid;
+            this.monsterGrid = monsterGrid;
         }
 
         @Override public boolean onTouch(View v, MotionEvent evt) {
@@ -50,20 +50,17 @@ public class MonsterMain extends Activity {
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
 
-                   float x=evt.getX() ;
-                    float y=evt.getY();
-                    x=x-monsterGrid.leftMargin;
-                    y=y-monsterGrid.topMargin;
+                   float x = evt.getX() ;
+                    float y = evt.getY();
+                    x = x - monsterGrid.getLeftMargin();
+                    y = y - monsterGrid.getTopMargin();
 
-                    x=x/monsterGrid.squareWidth;
-                    y=y/monsterGrid.squareWidth;
+                    x = x / monsterGrid.getSquareHeight();
+                    y = y / monsterGrid.getSquareWidth();
 
-                    if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable()){
+                    if(mMonsters.positions[(int)x][(int)y] != null && mMonsters.positions[(int)x][(int)y].isVulnerable()){
                         mMonsters.removeMonster(new Monster((int) x, (int) y, monstersModel.getVulnerableProb()));
-                        //point++;
-                    // System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
-                    //Canvas canvas=new Canvas();MONSTERS_TOTAL
-                       monsterGrid.invalidate();
+                        monsterGrid.invalidate();
                         pointView.setText(Integer.toString(mMonsters.killed));
                     }
                     break;
@@ -73,8 +70,6 @@ public class MonsterMain extends Activity {
             return true;
         }
     }
-
-    private final Random rand = new Random();
 
     /** The application model */
     final Monsters monstersModel = new Monsters(totalNumberProbArrays[0], vulnerableProbArrays[0]);
@@ -159,7 +154,6 @@ public class MonsterMain extends Activity {
         monsterGrid.setOnCreateContextMenuListener(this);
         monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel,monsterGrid));
     }
-
 
     /**
      * Install an options menu.

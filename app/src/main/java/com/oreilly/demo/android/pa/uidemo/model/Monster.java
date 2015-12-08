@@ -62,7 +62,6 @@ public final class Monster extends Observable{
                 m.notifyObservers(m);//tell MonsterGrid monster has moved
             }
         }
-
     };
 
     /**
