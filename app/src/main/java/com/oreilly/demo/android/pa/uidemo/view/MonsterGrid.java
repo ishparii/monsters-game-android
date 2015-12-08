@@ -40,6 +40,22 @@ public class MonsterGrid extends View implements Observer{
     private  Paint paint = new Paint();
     private boolean ifInit =false;
 
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
     /**
      * @param context the rest of the application
      */
@@ -163,6 +179,7 @@ public class MonsterGrid extends View implements Observer{
         params[1]=m;
         m.async.cancel(false);
         m.async=new Monster.Async();
+        m.async.taskBatchId=m.monsterBatchId;
         m.async.execute(params);
 
         // if(monsters.getMonsters().size()<(int)(monsters.MONSTERS_TOTAL*0.8))

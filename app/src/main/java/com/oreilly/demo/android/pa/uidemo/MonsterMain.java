@@ -58,8 +58,13 @@ public class MonsterMain extends Activity {
                     x=x/monsterGrid.squareWidth;
                     y=y/monsterGrid.squareWidth;
 
-                    if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable()){
-                        mMonsters.removeMonster(new Monster((int) x, (int) y, monstersModel.getVulnerableProb()));
+                    int indexX = (int)x;
+                    int indexY = (int)y;
+
+                    if(indexX >= 0 && indexX < monsterGrid.getRow() && indexY > 0 && indexY < monsterGrid.getColumn()
+                            && mMonsters.positions[indexX][indexY]!=null && mMonsters.positions[indexX][indexY].isVulnerable()){
+
+                        mMonsters.removeMonster(new Monster(indexX, indexY, monstersModel.getVulnerableProb()));
                         //point++;
                     // System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
                     //Canvas canvas=new Canvas();MONSTERS_TOTAL

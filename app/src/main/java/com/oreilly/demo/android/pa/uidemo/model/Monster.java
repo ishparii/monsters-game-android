@@ -21,12 +21,23 @@ public final class Monster extends Observable{
     private boolean isVulnerable;
     public boolean moved=false;
     public int t=0;
+    public int monsterBatchId;
 
     public static Random ra=new Random();
 
     public Async async=new Async();
 
     public static class Async extends AsyncTask<Object,Void,Monster> {
+
+        public int taskBatchId;
+
+        @Override
+        protected void onPreExecute (){
+            if(Monsters.currentTaskBatchId!=taskBatchId){
+                cancel(false);
+            }
+        }
+
         @Override
         protected Monster doInBackground(Object... params) {
 

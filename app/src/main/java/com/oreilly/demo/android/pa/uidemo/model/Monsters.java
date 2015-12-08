@@ -32,6 +32,8 @@ public class Monsters implements Observer {
 
     public Monster[][] positions;
 
+    public static int currentTaskBatchId=0;
+
 
     public MonsterGrid monsterGrid;
     public int killed=0;
@@ -84,10 +86,12 @@ public class Monsters implements Observer {
     }
 
     public void stopMoving(){
-        for(Monster monster:monsters){
-            monster.async.cancel(false);
-            monster.async = null;
-        }
+        currentTaskBatchId=(currentTaskBatchId+1)%2;
+
+//        for(Monster monster:monsters){
+//            monster.async.cancel(false);
+//            monster.async = null;
+//        }
     }
 
     public void startMoving(){
@@ -97,6 +101,7 @@ public class Monsters implements Observer {
             params[0]=positions;
             params[1]=monster;
             monster.async = new Monster.Async();
+            monster.async.taskBatchId=currentTaskBatchId;
             monster.async.execute(params);
         }
     }
@@ -140,6 +145,7 @@ public class Monsters implements Observer {
                     exist = false;
 
                     Monster newMonster=new Monster(x,y,vulnerableProb);
+                    newMonster.monsterBatchId=Monsters.currentTaskBatchId;
                     addMonster(newMonster);
                 }
             }
