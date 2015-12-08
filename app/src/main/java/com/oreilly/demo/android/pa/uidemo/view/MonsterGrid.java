@@ -127,8 +127,6 @@ public class MonsterGrid extends View implements Observer{
 
     public void initializeMeasures(){
 
-
-
         displayHeight = getHeight() - 10;
         displayWidth = getWidth() - 10;
 
@@ -146,13 +144,11 @@ public class MonsterGrid extends View implements Observer{
 
         //positions = new Monster[column][row];
 
-
-
         monsters.column=column;
         monsters.row=row;
         monsters.MONSTERS_TOTAL=(int)(row*column*0.15);
-        monsters.initializeMonsters(monsters.MONSTERS_TOTAL);
-       // monsters.positions=positions;
+        //monsters.initializeMonsters(monsters.MONSTERS_TOTAL);
+        //monsters.positions=positions;
     }
 
 
@@ -178,10 +174,11 @@ public class MonsterGrid extends View implements Observer{
         //onDraw(canvas);
        // this.onDraw(canvas);
         //System.out.println("Get Notified");
-       Monster m=(Monster)arg;
+        Monster m=(Monster)arg;
         Object[] params=new Object[2];
         params[0]=monsters.positions;
         params[1]=m;
+        m.async.cancel(false);
         m.async=new Monster.Async();
         m.async.execute(params);
 
@@ -195,7 +192,14 @@ public class MonsterGrid extends View implements Observer{
 
     }
 
+    public void stopMoving(){
+        monsters.stopMoving();
+        monsters.clearMonsters();
+    }
 
-
+    public void startMoving(){
+        monsters.initializeMonsters(monsters.MONSTERS_TOTAL);
+        monsters.startMoving();
+    }
 
 }

@@ -13,13 +13,13 @@
 
 
         <TextView
-            android:layout_width="142dp"
+            android:layout_width="131dp"
             android:layout_height="wrap_content"
             android:id="@+id/clockView"
             android:textSize="30dp"
             android:layout_marginRight="5dp"
             android:numeric="integer"
-            android:text="00:01:00"
+            android:text="00:00:30"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <Button
@@ -27,7 +27,7 @@
             android:text="Start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="28dp"
             android:layout_marginBottom="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
         />
@@ -37,7 +37,7 @@
             android:text="Stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="28dp"
             android:layout_marginBottom="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
         />

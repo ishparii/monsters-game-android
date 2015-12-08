@@ -30,17 +30,13 @@ import java.util.concurrent.TimeUnit;
 public class MonsterMain extends Activity {
 
     /** finger target size*/
-    static final int FINGER_TARGET_SIZE_DP = 36;
     public static DisplayMetrics displayMetrics = new DisplayMetrics();
-
 
     /** Listen for taps. */
     private final class TrackingTouchListener implements View.OnTouchListener {
 
         private final Monsters mMonsters;
         private final MonsterGrid monsterGrid;
-        private List<Integer> tracks = new ArrayList<Integer>();
-
 
         TrackingTouchListener(Monsters mMonsters,MonsterGrid monsterGrid) {
             this.mMonsters = mMonsters;
@@ -80,94 +76,11 @@ public class MonsterMain extends Activity {
                         pointView.setText(Integer.toString(mMonsters.killed));
                     }
                     //monsterGrid.update();
-
-
-
-
-                    break;
-
-
-                case MotionEvent.ACTION_POINTER_DOWN:
-                    idx = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
-                            >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-                    tracks.add(Integer.valueOf(evt.getPointerId(idx)));
-                    break;
-                case MotionEvent.ACTION_POINTER_UP:
-                    idx = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
-                            >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-                    tracks.remove(Integer.valueOf(evt.getPointerId(idx)));
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    n = evt.getHistorySize();
-                    for (Integer i: tracks) {
-                        idx = evt.findPointerIndex(i.intValue());
-//                        for (int j = 0; j < n; j++) {
-//                            addDot(
-//                                    mDots,
-//                                    evt.getHistoricalX(idx, j),
-//                                    evt.getHistoricalY(idx, j),
-//                                    evt.getHistoricalPressure(idx, j),
-//                                    evt.getHistoricalSize(idx, j));
-//                        }
-                    }
                     break;
                 default:
                     return false;
             }
-
-//            for (Integer i: tracks) {
-//                idx = evt.findPointerIndex(i.intValue());
-//                addDot(
-//                        mDots,
-//                        evt.getX(idx),
-//                        evt.getY(idx),
-//                        evt.getPressure(idx),
-//                        evt.getSize(idx));
-//            }
             return true;
-        }
-
-        private void addMonster(int x, int y, boolean isVulnerable) {
-            //mMonsters.addMonster(x, y, isVulnerable);
-        }
-    }
-
-    /** Generate new monsters, one per second. */
-    private final class MonsterGenerator implements Runnable {
-        final Monsters monsters;
-        final MonsterGrid view;
-        final int color;
-
-        private final Handler hdlr = new Handler();
-
-        private final Runnable makeDots = new Runnable() {
-           @Override public void run() {
-//               makeDot(dots, view, color);
-           }
-        };
-
-        private volatile boolean done;
-
-        MonsterGenerator(Monsters monsters, MonsterGrid view, int color) {
-            this.monsters = monsters;
-            this.view = view;
-            this.color = color;
-        }
-
-        public void done() {
-            done = true;
-        }
-
-        @Override
-        public void run() {
-            while (!done) {
-                hdlr.post(makeDots);
-                try {
-                    Thread.sleep(2000);
-                }
-                catch (InterruptedException e) {
-                }
-            }
         }
     }
 
@@ -195,13 +108,7 @@ public class MonsterMain extends Activity {
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
 
-        //        Clock clock=new Clock();
-//        clock.setOnTickListener(monstersModel);
-//        clock.start();
-
-      getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         //install the countdown timer
         setContentView(R.layout.monster_main);
@@ -210,10 +117,10 @@ public class MonsterMain extends Activity {
         textViewTimer = (TextView) findViewById(R.id.clockView);
         buttonStart = (Button) findViewById(R.id.start);
         buttonStop = (Button) findViewById(R.id.stop);
-        textViewTimer.setText("00:01:00");
+        textViewTimer.setText("00:00:30");
 
 
-        final CountDownTimer timer = new CountDownTimer(60000,1000){
+        final CountDownTimer timer = new CountDownTimer(30000,1000){
 
             public void onTick(long millisUntilFinished){
                 textViewTimer.setText(""+String.format(FORMAT,
@@ -225,144 +132,38 @@ public class MonsterMain extends Activity {
                                 TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
                 ));
             }
-
             public void onFinish(){
-                textViewTimer.setText("Time is Up!");
+                monsterGrid.stopMoving();
+                textViewTimer.setText("00:00:00");
             }
         };
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    timer.start();
-
+                timer.start();
+                monsterGrid.startMoving();
             }
         });
 
         buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                monsterGrid.stopMoving();
+                pointView.setText("0");
                 timer.cancel();
             }
         });
-
-
-
-
-
 
         // find the monster view
         monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
         //clock.setOnTickListener(monsterGrid);
 
-
         monstersModel.monsterGrid=this.monsterGrid;
-
-        //monsterGrid.initializeMeasures();
 
         monsterGrid.setMonsters(monstersModel);
 
         monsterGrid.setOnCreateContextMenuListener(this);
         monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel,monsterGrid));
-
-
-        monsterGrid.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (KeyEvent.ACTION_DOWN != event.getAction()) {
-//                    return false;
-//                }
-//
-//                int color;
-//                switch (keyCode) {
-//                    case KeyEvent.KEYCODE_SPACE:
-//                        color = Color.MAGENTA;
-//                        break;
-//                    case KeyEvent.KEYCODE_ENTER:
-//                        color = Color.BLUE;
-//                        break;
-//                    default:
-//                        return false;
-//                }
-//
-//                makeDot(dotModel, dotView, color);
-
-                return true;
-            }
-        });
-
-
-        monsterGrid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus && (null != dotGenerator)) {
-//                    dotGenerator.done();
-//                    dotGenerator = null;
-//                }
-//                else if (hasFocus && (null == dotGenerator)) {
-//                    dotGenerator
-//                            = new DotGenerator(dotModel, dotView, Color.BLACK);
-//                    new Thread(dotGenerator).start();
-//                }
-            }
-        });
-
-
-
     }
-
-
-    /** Install an options menu. */
-   /* @Override public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.simple_menu, menu);
-        return true;
-    }*/
-
-    /** Respond to an options menu selection. */
-//    @Override public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.menu_restart:
-//                clockModel.start();
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
-    /** Install a context menu. */
-//    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-//        menu.add(Menu.NONE, 1, Menu.NONE, "Restart").setAlphabeticShortcut('r');
-//    }
-
-    /** Respond to a context menu selection. */
-//    @Override public boolean onContextItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case 1:
-//                new Thread();
-//                clockModel.start();
-//
-//
-//               return true;
-//            default: ;
-//       }
-//        return false;
-//    }
-
-//    /**
-//     * @param dots the dots we're drawing
-//     * @param view the view in which we're drawing dots
-//     * @param color the color of the dot
-//     */
-
-    void makeMonster(Monsters monsters, MonsterGrid monsterGrid) {
-
-
-//        int pad = (DOT_DIAMETER + 2) * 2;
-//        dots.addDot(
-//                DOT_DIAMETER + (rand.nextFloat() * (view.getWidth() - pad)),
-//                DOT_DIAMETER + (rand.nextFloat() * (view.getHeight() - pad)),
-//                color,
-//                DOT_DIAMETER);
-    }
-
 }

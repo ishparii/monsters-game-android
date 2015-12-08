@@ -51,9 +51,7 @@ public class Monsters implements Observer {
     }
 
     /**
-     * @param x horizontal coordinate at top left corner
-     * @param y vertical coordinate at top left corner
-     * @param isVulnerable status of monster.
+     * @param newMonster.
       */
     public Monster addMonster(Monster newMonster) {
         //Monster newMonster=new Monster(x, y, isVulnerable);
@@ -61,8 +59,7 @@ public class Monsters implements Observer {
         params[0]=positions;
         params[1]=newMonster;
         newMonster.addObserver(monsterGrid);
-        newMonster.async.execute(params);
-
+        //newMonster.async.execute(params);
 
         monsters.add(newMonster);
         positions[newMonster.getX()][newMonster.getY()]=newMonster;
@@ -71,19 +68,34 @@ public class Monsters implements Observer {
         return newMonster;
     }
 
-    public  boolean removeMonster(Monster monster){
-         positions[monster.getX()][monster.getY()] = null;
-        killed++;
-        return monsters.remove(monster);
+    public void stopMoving(){
+        for(Monster monster:monsters){
+            monster.async.cancel(false);
+            monster.async = null;
+        }
     }
 
-    public void removeMonster(int x, int y){
+    public void startMoving(){
 
+        for(Monster monster:monsters){
+            Object[] params=new Object[2];
+            params[0]=positions;
+            params[1]=monster;
+            monster.async = new Monster.Async();
+            monster.async.execute(params);
+        }
+    }
+
+    public  boolean removeMonster(Monster monster){
+        positions[monster.getX()][monster.getY()] = null;
+        killed++;
+        return monsters.remove(monster);
     }
 
     /** Remove all dots. */
     public void clearMonsters() {
         monsters.clear();
+        killed = 0;
         notifyListener();
     }
 
@@ -106,13 +118,6 @@ public class Monsters implements Observer {
         // Object[] params=new Object[2];
         // params[0]=positions;
         //params[1]=r[3];
-
-
-
-    }
-
-    public void onTick(){
-        // updateMonsters();
     }
 
     public void updateMonsters(){
