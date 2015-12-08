@@ -79,7 +79,8 @@ public class MonsterMain extends Activity {
     private final Random rand = new Random();
 
     /** The application model */
-    final Monsters monstersModel = new Monsters();
+    final Monsters monstersModel = new Monsters(15, 20);
+
 
 
 

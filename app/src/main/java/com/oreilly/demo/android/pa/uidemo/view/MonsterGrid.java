@@ -25,7 +25,6 @@ import java.util.Observer;
 public class MonsterGrid extends View implements Observer{
 
     static final int FINGER_TARGET_SIZE_DP = 36;
-    static final int MONSTERS_TOTAL=20;
 
     private int row;
     private int column;
@@ -38,7 +37,6 @@ public class MonsterGrid extends View implements Observer{
     private int displayWidth;
     private int displayHeight;
     private Monsters monsters;
-    //private Monster[][] positions;
     private  Paint paint = new Paint();
     private boolean ifInit =false;
 
@@ -77,14 +75,6 @@ public class MonsterGrid extends View implements Observer{
 
     public void setMonsters(Monsters monsters){
         this.monsters = monsters;
-    }
-
-    public int getRow(){
-        return row;
-    }
-
-    public int getColumn(){
-        return column;
     }
 
     /**
@@ -146,8 +136,8 @@ public class MonsterGrid extends View implements Observer{
 
         monsters.column=column;
         monsters.row=row;
-        monsters.setTotalNumberOfMonsters((int)(row*column*0.15));
-        monsters.setVulnerableProb(20);
+//        monsters.setTotalNumberOfMonsters(row*column*totalMonsterNumberProb/100);
+//        monsters.setVulnerableProb(vulnerableProb);
         //monsters.initializeMonsters(monsters.MONSTERS_TOTAL);
         //monsters.positions=positions;
     }

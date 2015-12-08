@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import com.oreilly.demo.android.pa.uidemo.R;
 
 import java.util.Observable;
+import java.util.Random;
 
 /** A monster: the coordinates and status */
 public final class Monster extends Observable{
@@ -22,7 +23,7 @@ public final class Monster extends Observable{
     public int t=0;
     //public MonsterGrid monsterGrid;
 
-    public static  Random ra=new Random();
+    public static Random ra=new Random();
 
     public int getVulnerableProb() {
         return vulnerableProb;

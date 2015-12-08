@@ -39,6 +39,11 @@ public class Monsters implements Observer {
     public int killed=0;
     public static  Random ra=new Random();
 
+    public Monsters(int totalMonsterNumberProb, int vulnerableProb){
+        this.totalNumberOfMonsters = totalMonsterNumberProb;
+        this.vulnerableProb = vulnerableProb;
+    }
+
     /** @param l set the change listener. */
     public void setMonstersChangeListener(MonstersChangeListener l) {
         monstersChangeListener = l;
