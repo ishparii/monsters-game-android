@@ -22,8 +22,6 @@ public class Monsters implements Observer {
     }
 
     private final LinkedList<Monster> monsters = new LinkedList<>();
-    //private final List<Monster> safeMonsters = Collections.unmodifiableList(monsters);
-    //private final Monster[][] positions=new Monster[1][1];
 
     private MonstersChangeListener monstersChangeListener;
     public int column;
@@ -84,12 +82,10 @@ public class Monsters implements Observer {
 //        params[0]=positions;
 //        params[1]=newMonster;
         newMonster.addObserver(monsterGrid);
-        //newMonster.async.execute(params);
 
         monsters.add(newMonster);
         positions[newMonster.getX()][newMonster.getY()]=newMonster;
 
-       // notifyListener();
         return newMonster;
     }
 
@@ -117,7 +113,7 @@ public class Monsters implements Observer {
         return monsters.remove(monster);
     }
 
-    /** Remove all dots. */
+    /** Remove all monster. */
     public void clearMonsters() {
         monsters.clear();
         killed = 0;
@@ -132,17 +128,7 @@ public class Monsters implements Observer {
     
     @Override
     public synchronized void  update(Observable o, Object arg){
-        //Object[] r=(Object[])arg;
-        //Monster newMonster=new Monster((int)r[0],(int)r[1],(int)r[2]==1);
-        // positions[((Monster)r[3]).getX()][((Monster)r[3]).getY()]=null;
 
-        //addMonster(newMonster);
-        //removeMonster(newMonster );
-        //  monsters.remove(r[3]);
-        // positions[(int)r[0]][(int)r[1]]=newMonster;
-        // Object[] params=new Object[2];
-        // params[0]=positions;
-        //params[1]=r[3];
     }
 
     public void updateMonsters(){
@@ -150,42 +136,13 @@ public class Monsters implements Observer {
         int y;
         boolean v;
 
-        // Random rand = new Random();
         int l=getMonsters().size();
-
-        for(int i=0;i<l;i++){//update all the monsters
-            // Object arg= getMonsters().get(i).move(positions);
-
-            /*Object[] r=(Object[])arg;
-            Monster newMonster=new Monster((int)r[0],(int)r[1],(int)r[2]==1);
-            newMonster.addObserver(this);
-            monsters.add(newMonster);
-            positions[(int)r[0]][(int)r[1]]=newMonster;*/
-
-            // getMonsters().get(i).moved=false;
-
-            // positions[r[0]][r[1]]= this.monsters.addMonster(r[0],r[1],r[2]==1);
-        }
 
         Iterator<Monster> iterator = getMonsters().iterator();
         while(iterator.hasNext()){
             if(iterator.next().isMoved())
                 iterator.remove();
         }
-
-
-        /*for(int i=0;i<MONSTERS_TOTAL-getMonsters().size();i++){//need to add more monsters
-            boolean exist = true;
-            while (exist){
-                x = rand.nextInt(column);
-                y = rand.nextInt(row);
-                if(positions[x][y]==null){
-                    exist = false;
-                    positions[x][y] = addMonster(x, y, rand.nextInt(100)%2==0);
-                    //monsters.getLastMonster().draw(canvas,  getContext(), squareWidth, leftMargin, topMargin, paint);
-                }
-            }
-        }*/
     }
 
     public void initializeMonsters(){
@@ -206,7 +163,6 @@ public class Monsters implements Observer {
 
                     Monster newMonster=new Monster(x,y,vulnerableProb);
                     addMonster(newMonster);
-                    //monsters.getLastMonster().draw(canvas,  getContext(), squareWidth, leftMargin, topMargin, paint);
                 }
             }
         }

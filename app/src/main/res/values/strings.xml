@@ -2,7 +2,11 @@
 <resources>
     <string name="app_name">Monster</string>
     <string name="defaultText">0</string>
-    <string name="menuRestart">Restart</string>
+    <string name="menuLevel1">Level 1</string>
+    <string name="menuLevel2">Level 2</string>
+    <string name="menuLevel3">Level 3</string>
+    <string name="menuLevel4">Level 4</string>
+    <string name="menuLevel5">Level 5</string>
     <string name="clock">60</string>
     <string name="points">0</string>
 </resources>

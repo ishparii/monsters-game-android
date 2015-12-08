@@ -21,7 +21,6 @@ public final class Monster extends Observable{
     private boolean isVulnerable;
     public boolean moved=false;
     public int t=0;
-    //public MonsterGrid monsterGrid;
 
     public static Random ra=new Random();
 
@@ -38,14 +37,11 @@ public final class Monster extends Observable{
     public static class Async extends AsyncTask<Object,Void,Monster> {
         @Override
         protected Monster doInBackground(Object... params) {
-           // System.out.println("Do in background");
 
             Monster[][] positions = (Monster[][]) params[0];
             Monster m=(Monster) params[1];
             m.moved=false;
 
-            //params[0]=(Void)new Object();
-            //while(!m.isMoved()) {
                 try {
 
                       Thread.sleep(80); //move every 0.08 second
@@ -54,25 +50,13 @@ public final class Monster extends Observable{
                 }
 
 
-                // while(true){
-               //if(m.isVulnerable() ||(!m.isVulnerable() && m.t<=2))
                  m.move(positions);
-               //m.isVulnerable=Monsters.ra.nextInt(100)<Monsters.VULNERABLE_PROB;
-
-
-               //m.t=(m.t+1)%2;
-           // }
-
-           // }
 
             return m;
         }
 
         @Override
         protected void onPostExecute(Monster m) {
-            // showDialog("Downloaded " + result + " bytes");
-            //s("Downloaded " + result + " bytes");
-            //return;
             if(m.isMoved()) {
                 m.setChanged();
                 m.notifyObservers(m);//tell MonsterGrid monster has moved
@@ -80,8 +64,6 @@ public final class Monster extends Observable{
         }
 
     };
-   // private Observable observable;
-    //Random rand=new Random();
 
     /**
      * @param x horizontal coordinate at top left corner.
@@ -126,7 +108,6 @@ public final class Monster extends Observable{
 
     }
 
-//<<<<<<< HEAD
     //define if two monsters equals
     public boolean equals(Object obj){
         if(!(obj instanceof Monster))
@@ -145,14 +126,6 @@ public final class Monster extends Observable{
        Object[] result=new Object[4];
        int lx=positions.length; //lx is the number of rows of the positions
        int ly=positions[0].length; // ly is the number of columns of the positions
-        //moved=true;
-      //int startDirection;
-      /* ArrayList<Integer> availableDirections=new ArrayList<>();
-       for(int i=1;i<=8;i++){
-           if (positions[Math.max(x - 1, 0)][y] == null)
-               availableDirections.add(i);
-
-       }*/
            int count=7;
            int direction = ra.nextInt(8);
 
@@ -216,9 +189,6 @@ public final class Monster extends Observable{
                       }
                       break;
                   default:
-                     // result[0] = x;
-                      //result[1] = y;
-                      //moved=false;
                       break;
               }
 
@@ -232,21 +202,9 @@ public final class Monster extends Observable{
        if(count==-1){//stay at the same place
          result[0] = x;
          result[1] = y;
-           //moved=true;
        }
 
-      /* System.out.println("Move");
-       System.out.println("");
-       System.out.println("");
-       System.out.println("");
-       System.out.println("");*/
 
-
-
-       //result[0]=Math.max(x - 1, 0);
-       //result[1]=Math.max(y- 1, 0);
-       //result[0]=1;
-       //result[1]=1;
        positions[x][y]=null;//what does this mean? There is no monster at (x,y)
        //positions[(int)result[0]][(int)result[1]]=this;
        result[2]=ra.nextInt(100)<vulnerableProb; //some probability to change to vulnerable
@@ -260,12 +218,6 @@ public final class Monster extends Observable{
        isVulnerable=(boolean)result[2]; //30 percent probability to change to vulnerable like above
        positions[x][y]=this;
 
-       //positions[x][y]=null;
-      // if(moved){
-
-        // setChanged();
-         //notifyObservers(this);
-      // }
 
        return  result;
 
@@ -294,5 +246,4 @@ public final class Monster extends Observable{
         }
         draw(canvas, context, squareWidth, leftMargin, topMargin, paint);
     }*/
-//>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 }

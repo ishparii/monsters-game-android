@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -39,8 +42,6 @@ public class MonsterMain extends Activity {
             int n;
             int idx;
             int action = evt.getAction();
-            //int point=0;
-
 
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
@@ -51,23 +52,16 @@ public class MonsterMain extends Activity {
                     y=y-monsterGrid.topMargin;
 
                     x=x/monsterGrid.squareWidth;
-                    y=y/monsterGrid.squareHeight;
-                    //System.out.println("Touch!"+(int)x);
-                    //System.out.println("Touch!"+(int)y);
+                    y=y/monsterGrid.squareWidth;
 
-
-                     //x=(int)x;
-                     //y=(int)y;
                     if(mMonsters.positions[(int)x][(int)y]!=null && mMonsters.positions[(int)x][(int)y].isVulnerable()){
                         mMonsters.removeMonster(new Monster((int) x, (int) y, monstersModel.getVulnerableProb()));
                         //point++;
                     // System.out.println("Touch!" + mMonsters.removeMonster(new Monster((int) x, (int) y, false)));
                     //Canvas canvas=new Canvas();MONSTERS_TOTAL
                        monsterGrid.invalidate();
-                       // pointView.setText(mMonsters.killed);
                         pointView.setText(Integer.toString(mMonsters.killed));
                     }
-                    //monsterGrid.update();
                     break;
                 default:
                     return false;
@@ -82,21 +76,13 @@ public class MonsterMain extends Activity {
     final Monsters monstersModel = new Monsters(15, 20);
 
 
-
-
-//    final Clock clockModel = new Clock();
-
     /** The application view */
     MonsterGrid monsterGrid;
 
     TextView textViewTimer;
     TextView pointView;
     Button buttonStart, buttonStop;
-    //adjust the format h:m:s
     private static final String FORMAT = "%02d";
-
-
-
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -111,7 +97,6 @@ public class MonsterMain extends Activity {
         buttonStart = (Button) findViewById(R.id.start);
         buttonStop = (Button) findViewById(R.id.stop);
         textViewTimer.setText("30");
-
 
         final CountDownTimer timer = new CountDownTimer(30000,1000){
 
@@ -145,7 +130,6 @@ public class MonsterMain extends Activity {
 
         // find the monster view
         monsterGrid = (MonsterGrid) findViewById(R.id.monsterView);
-        //clock.setOnTickListener(monsterGrid);
 
         monstersModel.monsterGrid=this.monsterGrid;
 
@@ -154,4 +138,53 @@ public class MonsterMain extends Activity {
         monsterGrid.setOnCreateContextMenuListener(this);
         monsterGrid.setOnTouchListener(new TrackingTouchListener(monstersModel,monsterGrid));
     }
+
+
+    /**
+     * Install an options menu.
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.simple_menu, menu);
+        return true;
+    }
+
+    /** Respond to an options menu selection. */
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuLevel1:
+
+                return true;
+            case R.id.menuLevel2:
+
+                return true;
+            case R.id.menuLevel3:
+
+                return true;
+            case R.id.menuLevel4:
+
+                return true;
+            case R.id.menuLevel5:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+//    /** Install a context menu. */
+//    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        menu.add(Menu.NONE, 1, Menu.NONE, "Restart").setAlphabeticShortcut('r');
+//    }
+//
+//    /** Respond to a context menu selection. */
+//    @Override public boolean onContextItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case 1:
+//
+//
+//            default: ;
+//        }
+//        return false;
+//    }
 }
