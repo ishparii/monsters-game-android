@@ -1,6 +1,5 @@
 package com.oreilly.demo.android.pa.uidemo.model;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observer;
@@ -66,7 +65,7 @@ public class Monsters implements Observer {
     }
 
     public void stopMoving(){
-        for(Monster monster:monsters){
+        for(Monster monster : monsters){
             monster.async.cancel(false);
             monster.async = null;
         }
@@ -74,7 +73,7 @@ public class Monsters implements Observer {
 
     public void startMoving(){
 
-        for(Monster monster:monsters){
+        for(Monster monster : monsters){
             Object[] params=new Object[2];
             params[0] = positions;
             params[1] = monster;

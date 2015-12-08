@@ -32,8 +32,8 @@ public class MonsterGrid extends View implements Observer{
     private int displayWidth;
     private int displayHeight;
     private Monsters monsters;
-    private  Paint paint = new Paint();
-    private boolean ifInit = false;
+    private Paint paint = new Paint();
+    private boolean isInitialed = false;
 
     /**
      * @param context the rest of the application
@@ -83,9 +83,9 @@ public class MonsterGrid extends View implements Observer{
     }
 
     @Override protected void onDraw(Canvas canvas) {
-        if(!ifInit){
+        if(!isInitialed){
             initializeMeasures();
-            ifInit = true;
+            isInitialed = true;
         }
 
         paint.setStyle(Paint.Style.STROKE);
