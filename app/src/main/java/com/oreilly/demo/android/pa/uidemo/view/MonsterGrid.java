@@ -84,7 +84,6 @@ public class MonsterGrid extends View implements Observer{
       //dra(canvas);
         if(!ifInit){
             initializeMeasures();
-            //initializeMonsters();
             ifInit=true;
         }
 
@@ -105,14 +104,7 @@ public class MonsterGrid extends View implements Observer{
                     * squareWidth, displayHeight - bottomMargin, paint);
         }
 
-        //updateMonsters();
         drawMonsters(canvas, paint);
-       /* try {
-            Thread.sleep(30);
-        } catch (InterruptedException e) {
-        }
-        invalidate();*/
-
     }
 
     public void initializeMeasures(){

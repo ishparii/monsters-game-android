@@ -24,14 +24,6 @@ public final class Monster extends Observable{
 
     public static Random ra=new Random();
 
-    public int getVulnerableProb() {
-        return vulnerableProb;
-    }
-
-    public void setVulnerableProb(int vulnerableProb) {
-        this.vulnerableProb = vulnerableProb;
-    }
-
     public Async async=new Async();
 
     public static class Async extends AsyncTask<Object,Void,Monster> {
@@ -120,130 +112,43 @@ public final class Monster extends Observable{
              return false;
     }
 
-   public synchronized Object[] move (Monster[][] positions){ // positions is a matrix
+    public synchronized Object[] move (Monster[][] positions){ // positions is a matrix
 
+        Object[] result=new Object[4];
+        int lx=positions.length; //lx is the number of rows of the positions
+        int ly=positions[0].length; // ly is the number of columns of the positions
+        int count=7;
 
-       Object[] result=new Object[4];
-       int lx=positions.length; //lx is the number of rows of the positions
-       int ly=positions[0].length; // ly is the number of columns of the positions
-           int count=7;
-           int direction = ra.nextInt(8);
+        while(true){
 
-          while(true){
+            int newX = x + ra.nextInt(3) - 1;
+            int newY = y + ra.nextInt(3) - 1;
 
-              switch (direction) {
-                  case 0:
-                      if (positions[(x-1+lx)%lx][y] == null) { //the box above the monster
-                          result[0] = (x-1+lx)%lx; //%lx, %ly to limit boundary
-                          result[1] = y;
-                           moved=true;
-                      }
-                      break;
-                  case 1:
-                      if (positions[(x-1+lx)%lx][(y+1)%ly] == null) {// top right
-                          result[0] = (x-1+lx)%lx;
-                          result[1] = (y+1)%ly;
-                          moved=true;
-                      }
-                      break;
-                  case 2:
-                      if (positions[x][(y+1)%ly] == null) { //right
-                          result[0] = x;
-                          result[1] = (y+1)%ly;
-                          moved=true;
-                      }
-                      break;
-                  case 3:
-                      if (positions[(x+1)%lx][(y+1)%ly] == null) { //bottom right
-                          result[0] = (x+1)%lx;
-                          result[1] = (y+1)%ly;
-                          moved=true;
-                      }
-                      break;
-                  case 4:
-                      if (positions[(x+1)%lx][y] == null) { //bottom
-                          result[0] =(x+1)%lx;
-                          result[1] = y;
-                          moved=true;
-                      }
-                      break;
-                  case 5:
-                      if (positions[(x+1)%lx][(y-1+ly)%ly] == null) { //bottom left
-                          result[0] = (x+1)%lx;
-                          result[1] = (y-1+ly)%ly;
-                          moved=true;
-                      }
-                      break;
-                  case 6:
-                      if (positions[x][(y-1+ly)%ly] == null) { //left
-                          result[0] = x;
-                          result[1] = (y-1+ly)%ly;
-                          moved=true;
-                      }
-                      break;
-                  case 7:
-                      if (positions[(x-1+lx)%lx][(y-1+ly)%ly] == null) { //top left
-                          result[0] = (x-1+lx)%lx;
-                          result[1] = (y-1+ly)%ly;
-                          moved=true;
-                      }
-                      break;
-                  default:
-                      break;
-              }
+            if(newX >= 0 && newX < lx && newY >= 0 && newY < ly && positions[newX][newY]==null){
+                result[0] = newX;
+                result[1] = newY;
+                moved=true;
+            }
 
-             direction= (direction+1) % 8;
-
-             count--;
-              if(count==-1 || moved)
-                  break;
-         }
-
-       if(count==-1){//stay at the same place
-         result[0] = x;
-         result[1] = y;
-       }
-
-
-       positions[x][y]=null;//what does this mean? There is no monster at (x,y)
-       //positions[(int)result[0]][(int)result[1]]=this;
-       result[2]=ra.nextInt(100)<vulnerableProb; //some probability to change to vulnerable
-       result[3]=this;
-
-
-
-
-       x=(int)(result[0]); //change the monster's x coordinate
-       y=(int)(result[1]); //change the monster's y coordinate
-       isVulnerable=(boolean)result[2]; //30 percent probability to change to vulnerable like above
-       positions[x][y]=this;
-
-
-       return  result;
-
-   }
-
-
-
-
-//=======
-    /*public void remove(Canvas canvas, int squareWidth, int leftMargin, int topMargin, Paint paint) {
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(getX()*squareWidth + leftMargin, getY()*squareWidth + topMargin, squareWidth, squareWidth, paint);
-    }
-
-    public void move(Canvas canvas, Context context, int squareWidth, int leftMargin, int topMargin, Paint paint) {
-        remove(canvas, squareWidth, leftMargin, topMargin, paint);
-        Random rand = new Random();
-        x = getX() + (rand.nextInt(3)-1);
-        y = getY() + (rand.nextInt(3)-1);
-        int randomVulnerability = rand.nextInt(100);
-        if (randomVulnerability <= 40) {
-            isVulnerable = true;
-        } else {
-            isVulnerable = false;
+            count--;
+            if(count==-1 || moved)
+                break;
         }
-        draw(canvas, context, squareWidth, leftMargin, topMargin, paint);
-    }*/
+
+        if(count==-1){//stay at the same place
+            result[0] = x;
+            result[1] = y;
+        }
+
+        positions[x][y] = null;
+        result[2] = ra.nextInt(100)<vulnerableProb; //some probability to change to vulnerable
+        result[3] = this;
+
+        x=(int)(result[0]); //change the monster's x coordinate
+        y=(int)(result[1]); //change the monster's y coordinate
+        isVulnerable=(boolean)result[2]; //30 percent probability to change to vulnerable like above
+        positions[x][y]=this;
+        return  result;
+
+    }
 }

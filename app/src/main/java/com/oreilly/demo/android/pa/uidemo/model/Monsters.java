@@ -77,15 +77,9 @@ public class Monsters implements Observer {
      * @param newMonster
       */
     public Monster addMonster(Monster newMonster) {
-        //Monster newMonster=new Monster(x, y, isVulnerable);
-//        Object[] params=new Object[2];
-//        params[0]=positions;
-//        params[1]=newMonster;
         newMonster.addObserver(monsterGrid);
-
         monsters.add(newMonster);
         positions[newMonster.getX()][newMonster.getY()]=newMonster;
-
         return newMonster;
     }
 
@@ -127,23 +121,7 @@ public class Monsters implements Observer {
     }
     
     @Override
-    public synchronized void  update(Observable o, Object arg){
-
-    }
-
-    public void updateMonsters(){
-        int x;
-        int y;
-        boolean v;
-
-        int l=getMonsters().size();
-
-        Iterator<Monster> iterator = getMonsters().iterator();
-        while(iterator.hasNext()){
-            if(iterator.next().isMoved())
-                iterator.remove();
-        }
-    }
+    public synchronized void  update(Observable o, Object arg){}
 
     public void initializeMonsters(){
 
