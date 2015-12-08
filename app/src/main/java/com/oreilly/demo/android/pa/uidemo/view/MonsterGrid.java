@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.oreilly.demo.android.pa.uidemo.R;
-import com.oreilly.demo.android.pa.uidemo.model.Clock.OnTickListener;
+
 import com.oreilly.demo.android.pa.uidemo.model.Monster;
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 
@@ -22,7 +22,7 @@ import java.util.Observer;
 /**
  * Created by Group 03 on 12/1/15.
  */
-public class MonsterGrid extends View implements OnTickListener, Observer{
+public class MonsterGrid extends View implements Observer{
 
     static final int FINGER_TARGET_SIZE_DP = 36;
     static final int MONSTERS_TOTAL=20;

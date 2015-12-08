@@ -13,12 +13,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.graphics.Canvas;
 
-//<<<<<<< HEAD
-//import com.oreilly.demo.android.pa.uidemo.model.Clock.ClockModel;
-//import com.oreilly.demo.android.pa.uidemo.model.Clock.ConcreteClock;
-//=======
-import com.oreilly.demo.android.pa.uidemo.model.Clock;
-//>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
+
 import com.oreilly.demo.android.pa.uidemo.model.Monsters;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 import com.oreilly.demo.android.pa.uidemo.model.Monster;
@@ -174,7 +169,7 @@ public class MonsterMain extends Activity {
 
 
 
-    final Clock clockModel = new Clock();
+//    final Clock clockModel = new Clock();
 
     /** The application view */
     MonsterGrid monsterGrid;
@@ -187,28 +182,15 @@ public class MonsterMain extends Activity {
 
 
 
-    /** The dot generator */
-//    DotGenerator dotGenerator;
-
-    /** Called when the activity is first created. */
-//<<<<<<< HEAD
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-         Clock clock=new Clock();
-        clock.setOnTickListener(monstersModel);
-        clock.start();
+        //        Clock clock=new Clock();
+//        clock.setOnTickListener(monstersModel);
+//        clock.start();
 
       getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
 
-
-
-
-//=======
-   // @Override
-     //   public void onCreate(Bundle savedInstanceState) {
-         //super.onCreate(savedInstanceState);
-//>>>>>>> b707bce7317ed6f344f333e483acf77d0a32ed2a
 
         //install the countdown timer
         setContentView(R.layout.monster_main);
@@ -254,8 +236,6 @@ public class MonsterMain extends Activity {
 
 
 
-        // install the view
-        //setContentView(R.layout.monster_main);
 
 
 
@@ -315,18 +295,6 @@ public class MonsterMain extends Activity {
             }
         });
 
-        clockModel.setOnTickListener(new Clock.OnTickListener() {
-            @Override
-            public void onTick() {
-                TextView textView = (TextView) findViewById(R.id.clockView);
-                int displayTime = Integer.parseInt(textView.getText().toString());
-                displayTime--;
-                textView.setText(String.valueOf(displayTime));
-            }
-
-        });
-
-//        clockModel.start();
 
 
     }

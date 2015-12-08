@@ -8,14 +8,14 @@ import java.util.Observer;
 import java.util.Observable;
 import java.util.Random;
 
-import com.oreilly.demo.android.pa.uidemo.model.Clock.OnTickListener;
 import com.oreilly.demo.android.pa.uidemo.view.MonsterGrid;
 
-import static com.oreilly.demo.android.pa.uidemo.model.Monster.*;
+
 
 
 /** A list of monsters. */
-public class Monsters implements Observer , OnTickListener{
+public class Monsters implements Observer //, OnTickListener
+{
     /** MonsterChangeListener. */
     public interface MonstersChangeListener {
         /** @param monsters the monsters that changed. */
