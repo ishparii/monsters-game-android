@@ -112,6 +112,10 @@ public class MonsterMain extends Activity {
             public void onFinish(){
                 monsterGrid.stopMoving();
                 textViewTimer.setText("00");
+                isStopped = true;
+                buttonStop.setEnabled(false);
+                buttonStart.setEnabled(true);
+
             }
         };
 
@@ -121,6 +125,7 @@ public class MonsterMain extends Activity {
                 if(isStopped){
                     timer.start();
                     monsterGrid.startMoving();
+                    pointView.setText("0");
                     isStopped = false;
                     buttonStart.setEnabled(false);
                     buttonStop.setEnabled(true);
