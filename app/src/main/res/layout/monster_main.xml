@@ -54,6 +54,7 @@
             android:layout_weight="1"
             android:text="00"
             android:textSize="40dp"
+            android:textAlignment="center"
             android:numeric="integer"
             android:layout_marginLeft="10dp"
             android:paddingLeft="20dp"
